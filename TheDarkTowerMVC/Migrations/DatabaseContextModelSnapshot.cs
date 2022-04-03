@@ -40,7 +40,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User", (string)null);
                 });
 #pragma warning restore 612, 618
         }

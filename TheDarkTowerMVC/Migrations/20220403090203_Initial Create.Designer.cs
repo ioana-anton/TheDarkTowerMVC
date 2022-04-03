@@ -11,8 +11,8 @@ using TheDarkTowerMVC.Data;
 namespace TheDarkTowerMVC.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220331153619_Classes2")]
-    partial class Classes2
+    [Migration("20220403090203_Initial Create")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,7 +42,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User", (string)null);
                 });
 #pragma warning restore 612, 618
         }
