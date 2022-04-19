@@ -37,28 +37,21 @@ else
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-        options.RoutePrefix = string.Empty;
+        options.RoutePrefix = "swagger";
     });
 }
 
-//app.UseMvc(routes =>
-//{
-//    routes.MapRoute(
-//        name: "default",
-//        template: "{controller=Home}/{action=Index}");
-//});
 
 app.UseHttpsRedirection();
-app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
