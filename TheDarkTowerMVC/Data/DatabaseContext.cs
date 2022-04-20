@@ -23,6 +23,8 @@ namespace TheDarkTowerMVC.Data
         //definirea tabelelor
 
         public DbSet<User> Users { get; set; }
+        public DbSet<CardDeck> CardDecks { get; set; }
+        public DbSet<GameCard> GameCards { get; set; }
 
 
         //new thingy

@@ -31,6 +31,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 Console.WriteLine("Connection string: " + builder.Configuration.GetConnectionString("PostgreSQLConnectionString"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<UserService>();
 

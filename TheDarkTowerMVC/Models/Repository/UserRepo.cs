@@ -1,4 +1,5 @@
-﻿using TheDarkTowerMVC.Data;
+﻿using System.Data.Entity;
+using TheDarkTowerMVC.Data;
 using TheDarkTowerMVC.DTO;
 using TheDarkTowerMVC.Entity;
 
@@ -13,7 +14,7 @@ public class UserRepo
 
     public async Task<User> GetUserById(string id)
     {
-        var user = await databaseContext.Users.FindAsync(id);
+        var user = databaseContext.Users.Where(y => y.Id == id).Include(x => x.Decks).ToList().First();
         return user;
     }
 
@@ -27,13 +28,10 @@ public class UserRepo
 
     public User? GetUserByLogin(LoginUserDTO loginUserDTO)
     {
-        var byLogin2 = databaseContext.Users.Where(x => x.Password.Equals(loginUserDTO.Password) && (x.Email.Equals(loginUserDTO.Username) || x.Name.Equals(loginUserDTO.Username))).AsEnumerable().FirstOrDefault(defaultValue: null);
-        var byLogin = new User();
-        byLogin.Name = loginUserDTO.Username;
-        byLogin.Password = loginUserDTO.Password;
+        var byLogin = databaseContext.Users.Where(x => x.Password.Equals(loginUserDTO.Password) && x.Username.Equals(loginUserDTO.Username)).AsEnumerable().FirstOrDefault(defaultValue: null);
 
-        Console.WriteLine("UserRepo; Method: GetUserByLogin; loginUserDTO: username= " + loginUserDTO.Username + " password= " + loginUserDTO.Password);
-        Console.WriteLine("UserRepo; Method: GetUserByLogin; byLogin: username= " + byLogin2?.Email + " password= " + byLogin2?.Password);
-        return byLogin2;
+        Console.WriteLine("UserRepo; INPUT; Method: GetUserByLogin; loginUserDTO: username= " + loginUserDTO.Username + " password= " + loginUserDTO.Password);
+        Console.WriteLine("UserRepo; OUTPUT; Method: GetUserByLogin; byLogin: username= " + byLogin?.Username + " password= " + byLogin?.Password);
+        return byLogin;
     }
 }

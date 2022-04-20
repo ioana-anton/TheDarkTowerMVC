@@ -9,12 +9,14 @@ namespace TheDarkTowerMVC.Models.Service
     {
         private readonly UserRepo _userRepo;
         private readonly IMapper _mapper;
+        private readonly ILogger<UserService> _logger;
 
 
-        public UserService(UserRepo userRepo, IMapper mapper)
+        public UserService(UserRepo userRepo, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepo = userRepo;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<UserDTO> GetUserById(string id)
@@ -28,16 +30,27 @@ namespace TheDarkTowerMVC.Models.Service
             var user = _mapper.Map<User>(createUserDTO);
             user.Password = Encryption.CreateMd5(user.Password);
             await _userRepo.InsertNewUser(user);
+            _logger.LogInformation("UserService; User id inserat: " + user.Id);
             return await GetUserById(user.Id);
         }
 
         public async Task<UserDTO?> LoginUser(LoginUserDTO loginUserDTO)
         {
+            loginUserDTO.Password = Encryption.CreateMd5(loginUserDTO.Password);
             var user = _userRepo.GetUserByLogin(loginUserDTO);
 
-            Console.WriteLine("UserService; Method: LoginUser; user: username= " + user?.Email + " password= " + user?.Password);
 
-            if (user == null) return null;
+
+            if (user == null)
+            {
+                _logger.LogError(Error.USERSERVICE_USER_SELECT);
+                return null;
+            }
+            else
+            {
+                _logger.LogInformation("UserService; Method: LoginUser; user: username= " + user?.Username + " password= " + user?.Password);
+
+            }
             return _mapper.Map<UserDTO>(user);
         }
     }

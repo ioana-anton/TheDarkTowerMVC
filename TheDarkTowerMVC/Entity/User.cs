@@ -5,12 +5,13 @@
         //[Key]
         public String Id { get; set; } = Guid.NewGuid().ToString();
 
-        public String Name { get; set; }
-
-        //[Required]
-        public String Email { get; set; }
+        public String Username { get; set; }
 
         //[Required]
         public String Password { get; set; }
+
+        public int Role { get; set; } = 0;
+
+        public List<CardDeck> Decks { get; set; }
     }
 }
