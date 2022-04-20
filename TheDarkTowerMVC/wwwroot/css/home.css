@@ -1,0 +1,11 @@
+﻿.darktowergif {
+    background-image: url("/css/images/darktower.gif");
+    background-repeat: false;
+    background-size: 150px;
+    width: 600px;
+    height: 200px;
+}
+
+.p1 {
+    color: red;
+}
