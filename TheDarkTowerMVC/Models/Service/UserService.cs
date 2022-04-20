@@ -10,6 +10,7 @@ namespace TheDarkTowerMVC.Models.Service
         private readonly UserRepo _userRepo;
         private readonly IMapper _mapper;
 
+
         public UserService(UserRepo userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
@@ -28,6 +29,16 @@ namespace TheDarkTowerMVC.Models.Service
             user.Password = Encryption.CreateMd5(user.Password);
             await _userRepo.InsertNewUser(user);
             return await GetUserById(user.Id);
+        }
+
+        public async Task<UserDTO?> LoginUser(LoginUserDTO loginUserDTO)
+        {
+            var user = _userRepo.GetUserByLogin(loginUserDTO);
+
+            Console.WriteLine("UserService; Method: LoginUser; user: username= " + user?.Email + " password= " + user?.Password);
+
+            if (user == null) return null;
+            return _mapper.Map<UserDTO>(user);
         }
     }
 }

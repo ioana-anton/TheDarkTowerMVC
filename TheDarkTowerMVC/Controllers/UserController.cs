@@ -9,10 +9,12 @@ namespace TownHall.Controllers
     public class UserController : Controller
     {
         UserService _userService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(UserService userService)
+        public UserController(UserService userService, ILogger<UserController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -41,14 +43,21 @@ namespace TownHall.Controllers
         }
 
         [HttpPost]
-        [Route("/login")]
+        [Route("login")]
 
         public async Task<IActionResult> LoginUser(LoginUserDTO loginUserDTO)
         {
-            // var res = await _userService.LoginUser(loginUserDTO);
+            var res = await _userService.LoginUser(loginUserDTO);
 
-            //  if (!res) return BadRequest();
-            return Ok("/Home");
+            //if ((res.Email!=null)) return BadRequest();
+            //  Console.WriteLine(res.Email);
+            _logger.LogInformation("UserController: Revenire cu succes din userService! ");
+
+            if (res == null) return NotFound();
+
+            HttpContext.Session.SetString("userid", res.Id);
+
+            return Redirect("/");
         }
     }
 }

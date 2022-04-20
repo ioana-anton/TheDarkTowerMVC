@@ -1,4 +1,5 @@
 ﻿using TheDarkTowerMVC.Data;
+using TheDarkTowerMVC.DTO;
 using TheDarkTowerMVC.Entity;
 
 public class UserRepo
@@ -24,9 +25,15 @@ public class UserRepo
         await databaseContext.SaveChangesAsync();
     }
 
-    public async Task<User> GetUserByLogin(string username, string password)
+    public User? GetUserByLogin(LoginUserDTO loginUserDTO)
     {
-        var byLogin = databaseContext.Users.Where(x => x.Password == password && (x.Email == username || x.Name == username)).First();
-        return byLogin;
+        var byLogin2 = databaseContext.Users.Where(x => x.Password.Equals(loginUserDTO.Password) && (x.Email.Equals(loginUserDTO.Username) || x.Name.Equals(loginUserDTO.Username))).AsEnumerable().FirstOrDefault(defaultValue: null);
+        var byLogin = new User();
+        byLogin.Name = loginUserDTO.Username;
+        byLogin.Password = loginUserDTO.Password;
+
+        Console.WriteLine("UserRepo; Method: GetUserByLogin; loginUserDTO: username= " + loginUserDTO.Username + " password= " + loginUserDTO.Password);
+        Console.WriteLine("UserRepo; Method: GetUserByLogin; byLogin: username= " + byLogin2?.Email + " password= " + byLogin2?.Password);
+        return byLogin2;
     }
 }

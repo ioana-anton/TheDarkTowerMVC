@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using TheDarkTowerMVC.Data;
-using TheDarkTowerMVC.Entity;
 using TheDarkTowerMVC.Models.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,16 +7,29 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".AdventureWorks.Session";
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Adaugare logger
+Console.WriteLine("Building Logging");
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("PostgreSQLConnectionString");
-    Console.WriteLine(connectionString);
+    //Console.WriteLine("Connection string: " + connectionString);
     options.UseNpgsql(connectionString);
 });
 
+Console.WriteLine("Connection string: " + builder.Configuration.GetConnectionString("PostgreSQLConnectionString"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<UserService>();
@@ -48,6 +60,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

@@ -23,19 +23,25 @@
 
         console.log(`${uname} cu parola ${pass}`)
 
-        var res = await fetch('/login', {
-            method: "POST",
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                Username: uname,
-                Password: pass
-            })
-        });
+        try {
+            var res = await fetch('https://localhost:7148/user/login', {
+                method: "POST",
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    Username: uname,
+                    Password: pass
+                })
+            });
 
-        console.log(res);
-        var obj = await res.json();
+            console.log(res);
+            if(res.redirected) window.location.href = res.url;
+            var obj = await res.json();
+            console.log(obj);
 
-        window.location.href = `${obj}`;
-        console.log(obj);
+            //window.location.href = `${obj}`;
+        } catch(e) {
+            console.log(e);
+        }
+
     })
 </script>

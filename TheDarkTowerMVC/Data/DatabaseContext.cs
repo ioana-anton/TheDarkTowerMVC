@@ -12,7 +12,7 @@ namespace TheDarkTowerMVC.Data
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Server=localhost;Port=2233;User Id=postgres;Password=root;Database=the_dark_tower;");
+            => optionsBuilder.UseNpgsql("Server=localhost;Port=2233;User Id=postgres;Password=postgres;Database=the_dark_tower;");
 
         //comenzi consola pentru migrations
         // dotnet ef migrations add Classes

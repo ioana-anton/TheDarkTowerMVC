@@ -15,6 +15,8 @@ namespace TheDarkTowerMVC.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("userid") == null)
+                return View("~/Views/User/Index.cshtml");
             return View();
         }
 
