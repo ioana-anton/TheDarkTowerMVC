@@ -82,21 +82,26 @@ namespace TownHall.Controllers
                 _logger.LogInformation("UserController: Rol user: " + res.Role);
             }
 
-            CardDeck cardDeck = EntityFactory.createDefaultCardDeck();
+            //CardDeck cardDeck = EntityFactory.createDefaultCardDeck();
 
-            Console.Write("Test default deck: " + cardDeck.CreatedDateTime);
+            //Console.Write("Test default deck: " + cardDeck.CreatedDateTime);
 
-            CardBuilder cardBuilder = new CardBuilder();
+            //CardBuilder cardBuilder = new CardBuilder();
 
-            GameCard card = cardBuilder.setPower(100).setHealth(10).build();
+            //GameCard card = cardBuilder.setPower(100).setHealth(10).build();
 
-            Console.Write("Test card builder: power: " + card.Power + " health: " + card.Health);
-
+            //Console.Write("Test card builder: power: " + card.Power + " health: " + card.Health);
 
 
             HttpContext.Session.SetString("userid", res.Id);
 
-            return Redirect("/");
+            // return Redirect("/");
+
+            if (res.Role == 0)
+                return Redirect("/user/register");
+
+            return Redirect("/user/login");
+
         }
 
 
