@@ -4,8 +4,62 @@
 @using TheDarkTowerMVC.Controllers
 @using TheDarkTowerMVC.DTO
 @{
-    List<GameCardDTO> cards = (List<GameCardDTO>)ViewData["GameCards"];
+    List<CardDeckDTO> cardDecks = (List<CardDeckDTO>)ViewData["CardDecks"];
 }
-<h1>Personal Decks ╰(▔∀▔)╯</h1>
+<html>
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-<button class="player-add-new-deck-btn" onclick="window.location.href='https://localhost:7148/player/adddeck'">Add a new deck</button>
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Personal Decks ╰(▔∀▔)╯</h1>
+    <p></p>
+    <br />
+    @if (cardDecks == null)
+    {
+        //<h2>You don't have any friends! :c </h2>
+    }
+    else
+    {
+        <table>
+            @foreach (var deck in cardDecks)
+            {
+                @if (deck != null)
+                {
+                    <tr>
+                        <!-- Table Row - 1 -->
+            <td>@deck.Id</td>
+                        <td>@deck.Name</td>
+                        <td>@deck.byAdmin</td>
+                        <td>@deck.CreatedDateTime</td>
+                    </tr>
+                    <br>
+                }
+                else
+                {
+                    //<h2>You don't have any friends! :c </h2>
+                }
+            }
+        </table>
+    }
+
+
+    <button class="player-add-new-deck-btn" onclick="window.location.href='https://localhost:7148/player/adddeck'">Add a new deck</button>
+</body>
+</html>

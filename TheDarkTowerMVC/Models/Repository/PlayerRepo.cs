@@ -21,6 +21,14 @@ namespace TheDarkTowerMVC.Models.Repository
             return user;
         }
 
+        public List<CardDeck> GetCardDecks(String owner)
+        {
+
+            var decks = databaseContext.CardDecks.Where(y => y.UserId == owner || y.byAdmin).ToList();
+
+            return decks;
+        }
+
         public async Task<GameCard> GetCardByName(String name)
         {
 

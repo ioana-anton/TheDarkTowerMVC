@@ -10,6 +10,9 @@ namespace TheDarkTowerMVC.Profiles
         {
             CreateMap<CreatedDeckDTO, CardDeck>();
             CreateMap<CardDeck, CreatedDeckDTO>();
+            CreateMap<CardDeckDTO, CardDeck>();
+            CreateMap<CardDeck, CardDeckDTO>();
+
         }
     }
 }

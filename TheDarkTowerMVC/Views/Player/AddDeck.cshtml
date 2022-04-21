@@ -14,33 +14,33 @@
 
 @if (cards == null)
 {
-    <h2>You don't have any cards! :c </h2>
+        <h2>You don't have any cards! :c </h2>
 }
 else
 {
 
-    <form>
-        <label for="name">Deck Name:</label>
-        <input id="name" name="name" />
-        <br>
-        <h2>Select cards to add to your deck: </h2>
-        <select name="cardselect" id="cardselect" multiple>
+        <form>
+            <label for="name">Deck Name:</label>
+            <input id="name" name="name" />
+            <br>
+            <h2>Select cards to add to your deck: </h2>
+            <select name="cardselect" id="cardselect" multiple>
             @foreach (var card in cards)
             {
                 @if (card != null)
                 {
-                    <option value=@card.Name>@card.Name</option>
+                                <option value=@card.Name>@card.Name</option>
 
                 }
                 else
                 {
-                    <h2>You don't have any friends! :c </h2>
+                                <h2>You don't have any friends! :c </h2>
                 }
             }
-        </select>
-        <br></br>
-        <input id="multiple-cards-submit" type="submit" value="Submit">
-    </form>
+            </select>
+            <br></br>
+            <input id="multiple-cards-submit" type="submit" value="Submit">
+        </form>
 }
 
 <script>

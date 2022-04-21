@@ -30,6 +30,8 @@ namespace TheDarkTowerMVC.Controllers
         public IActionResult Decks()
         {
             ViewData["GameCards"] = _playerService.GetGameCards();
+            var id = HttpContext.Session.GetString("userid");
+            ViewData["CardDecks"] = _playerService.GetCardDecks(id);
             return View();
         }
 
@@ -38,6 +40,8 @@ namespace TheDarkTowerMVC.Controllers
         public IActionResult AddDeck()
         {
             ViewData["GameCards"] = _playerService.GetGameCards();
+            var id = HttpContext.Session.GetString("userid");
+            ViewData["CardDecks"] = _playerService.GetCardDecks(id);
             return View();
         }
 
@@ -56,6 +60,8 @@ namespace TheDarkTowerMVC.Controllers
             await _playerService.CreateDeck(id, selectedCards);
 
             //ViewData["GameCards"] = _playerService.GetGameCards();
+
+            ViewData["CardDecks"] = _playerService.GetCardDecks(id);
 
             return Ok();
         }

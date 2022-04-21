@@ -34,6 +34,16 @@ namespace TheDarkTowerMVC.Models.Service
             return _mapper.Map<UserDTO>(user);
         }
 
+        public List<CardDeckDTO> GetCardDecks(String userId)
+        {
+            var decks = _playerRepo.GetCardDecks(userId);
+            if (decks.Count == 0)
+            {
+                _logger.LogError("There are no decks!");
+                return null;
+            }
+            return _mapper.Map<List<CardDeckDTO>>(decks);
+        }
 
         public List<GameCardDTO> GetGameCards()
         {
@@ -41,6 +51,7 @@ namespace TheDarkTowerMVC.Models.Service
             if (cards.Count == 0)
             {
                 _logger.LogError("There are no game cards!");
+                return null;
             }
 
             return _mapper.Map<List<GameCardDTO>>(cards);
