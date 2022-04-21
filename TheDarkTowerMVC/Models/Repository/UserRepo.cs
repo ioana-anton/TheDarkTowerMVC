@@ -12,11 +12,18 @@ public class UserRepo
         databaseContext = dbContext;
     }
 
-    public async Task<User> GetUserById(string id)
+    public async Task<User> GetUserById(String id)
     {
         var user = databaseContext.Users.Where(y => y.Id == id).Include(x => x.Decks).ToList().First();
         return user;
     }
+
+    public List<Inbox> GetReceivedInbox(String id)
+    {
+        var messages = databaseContext.Inboxes.Where(u => u.Sender.Id.Equals(id)).Include(x => x.Recipients).ToList();
+        return messages;
+    }
+
 
     public async Task InsertNewUser(User user)
     {

@@ -9,6 +9,8 @@
         public readonly static String USERCONTROLLER_CREATE_USER = "ERROR: UserController; NULL RETURNED FROM USERSERVICE";
         public readonly static String USERSERVICE_CREATE_USER = "ERROR: UserService; NULL RETURNED FROM USERREPO";
 
+       // public readonly static String USERCONTROLLER_RECEIVED_INBOX = "ERROR: UserController; NO RECEIVED EMAILS";
+
 
     }
 }

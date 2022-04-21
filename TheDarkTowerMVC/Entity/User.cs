@@ -13,5 +13,7 @@
         public int Role { get; set; } = 0;
 
         public List<CardDeck> Decks { get; set; }
+
+        public List<Inbox> Inboxes { get; set; }
     }
 }

@@ -26,6 +26,10 @@ namespace TheDarkTowerMVC.Data
         public DbSet<CardDeck> CardDecks { get; set; }
         public DbSet<GameCard> GameCards { get; set; }
 
+        public DbSet<Inbox> Inboxes { get; set; }
+
+        public DbSet<Recipient> Recipients { get; set; }
+
 
         //new thingy
         protected override void OnModelCreating(ModelBuilder modelBuilder)

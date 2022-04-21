@@ -1,2 +1,21 @@
 ﻿.logout-btn {
+    height: 80%;
+    width: 30%;
+    background-color: azure;
+    font-palette: dark;
+}
+
+.account-btn {
+    height: 80%;
+    width: 30%;
+}
+
+.inbox-btn {
+    height: 100%;
+    width: 30%;
+}
+
+.btn-div {
+    height: 100%;
+    width: 50%;
 }

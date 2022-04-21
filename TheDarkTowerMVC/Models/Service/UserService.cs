@@ -25,6 +25,29 @@ namespace TheDarkTowerMVC.Models.Service
             return _mapper.Map<UserDTO>(user);
         }
 
+        public List<InboxDTO> GetReceivedInbox(string id)
+        {
+            var inboxes = _userRepo.GetReceivedInbox(id);
+
+            InboxDTOBuilder inboxDTOBuilder = new InboxDTOBuilder();
+            List<InboxDTO> inboxDTOList = new List<InboxDTO>();
+
+            foreach (var inbox in inboxes)
+            {
+                List<UserDTO> recipients = _mapper.Map<List<UserDTO>>(inbox.Recipients);
+                //Console.WriteLine("")
+                if (recipients == null)
+                {
+                    Console.WriteLine("UserService; GetReceivedInbox; Didn't find any recipients!!");
+                    return null;
+                }
+                var inboxDTO = inboxDTOBuilder.setSender(inbox.Sender.Id).setRecipients(recipients).setMessage(inbox.Message).build();
+                inboxDTOList.Add(inboxDTO);
+            }
+
+            return inboxDTOList;
+        }
+
         public async Task<UserDTO> CreateUser(CreateUserDTO createUserDTO)
         {
             var user = _mapper.Map<User>(createUserDTO);

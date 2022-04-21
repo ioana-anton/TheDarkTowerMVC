@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TheDarkTowerMVC.Data;
@@ -11,9 +12,10 @@ using TheDarkTowerMVC.Data;
 namespace TheDarkTowerMVC.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220420233203_Inbox")]
+    partial class Inbox
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,19 +39,19 @@ namespace TheDarkTowerMVC.Migrations
                     b.ToTable("CardDeckGameCard");
                 });
 
-            modelBuilder.Entity("InboxRecipient", b =>
+            modelBuilder.Entity("InboxUser", b =>
                 {
-                    b.Property<string>("InboxId")
+                    b.Property<string>("InboxesId")
                         .HasColumnType("text");
 
-                    b.Property<string>("RecipientsId")
+                    b.Property<string>("UsersId")
                         .HasColumnType("text");
 
-                    b.HasKey("InboxId", "RecipientsId");
+                    b.HasKey("InboxesId", "UsersId");
 
-                    b.HasIndex("RecipientsId");
+                    b.HasIndex("UsersId");
 
-                    b.ToTable("InboxRecipient");
+                    b.ToTable("InboxUser");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.CardDeck", b =>
@@ -107,30 +109,9 @@ namespace TheDarkTowerMVC.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("SenderId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SenderId");
 
                     b.ToTable("Inboxes");
-                });
-
-            modelBuilder.Entity("TheDarkTowerMVC.Entity.Recipient", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ReceiverId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.ToTable("Recipient");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.User", b =>
@@ -169,17 +150,17 @@ namespace TheDarkTowerMVC.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("InboxRecipient", b =>
+            modelBuilder.Entity("InboxUser", b =>
                 {
                     b.HasOne("TheDarkTowerMVC.Entity.Inbox", null)
                         .WithMany()
-                        .HasForeignKey("InboxId")
+                        .HasForeignKey("InboxesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheDarkTowerMVC.Entity.Recipient", null)
+                    b.HasOne("TheDarkTowerMVC.Entity.User", null)
                         .WithMany()
-                        .HasForeignKey("RecipientsId")
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -195,31 +176,9 @@ namespace TheDarkTowerMVC.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TheDarkTowerMVC.Entity.Inbox", b =>
-                {
-                    b.HasOne("TheDarkTowerMVC.Entity.User", "Sender")
-                        .WithMany("Inboxes")
-                        .HasForeignKey("SenderId");
-
-                    b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("TheDarkTowerMVC.Entity.Recipient", b =>
-                {
-                    b.HasOne("TheDarkTowerMVC.Entity.User", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-                });
-
             modelBuilder.Entity("TheDarkTowerMVC.Entity.User", b =>
                 {
                     b.Navigation("Decks");
-
-                    b.Navigation("Inboxes");
                 });
 #pragma warning restore 612, 618
         }

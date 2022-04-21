@@ -43,6 +43,36 @@ namespace TownHall.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("account")]
+        public IActionResult Account()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("sendmessage")]
+        public IActionResult SendMessage()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("inbox")]
+        public IActionResult Inbox()
+        {
+            var id = HttpContext.Session.GetString("userid");
+
+            if (id == null) return NotFound();
+            var received = _userService.GetReceivedInbox(id);
+
+            ViewData["ReceivedInbox"] = received;
+
+            _logger.LogInformation("UserController; Inbox; Returned succesfully from UserService!");
+
+            return View();
+        }
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> CreateUser(CreateUserDTO createUserDTO)

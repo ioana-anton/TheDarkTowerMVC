@@ -22,20 +22,25 @@
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                    @* <ul class="navbar-nav flex-grow-1">*@
                     @{
                         if (Context.Session.GetString("userid") != null)
                         {
-                            <button class="logout-btn">Log out</button>
+                            <div class="btn-div">
+
+
+                                <button class="account-btn" onclick="window.location.href='https://localhost:7148/user/account'">Account</button>
+
+                                <button class="inbox-btn" onclick="window.location.href='https://localhost:7148/user/inbox'">Inbox</button>
+
+                                <button class="logout-btn" onclick="window.location.href='https://localhost:7148/user/login'">Log out</button>
+                            </div>
+
                         }
                     }
+
+
+                    @*</ul>*@
                 </div>
             </div>
         </nav>
