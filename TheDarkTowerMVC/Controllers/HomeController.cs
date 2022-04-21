@@ -8,6 +8,7 @@ namespace TheDarkTowerMVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -20,6 +21,7 @@ namespace TheDarkTowerMVC.Controllers
             {
                 HttpContext.Session.SetString("userid", "");
                 HttpContext.Session.SetString("userrole", "");
+
                 return View("~/Views/User/Index.cshtml");
             }
 

@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using TheDarkTowerMVC.DTO;
+using TheDarkTowerMVC.Entity;
 
 namespace TheDarkTowerMVC.Profiles
 {
-    public class PlayerProfile : Controller
+    public class PlayerProfile : Profile
     {
-        public IActionResult Index()
+        public PlayerProfile()
         {
-            return View();
+            CreateMap<CreatedDeckDTO, CardDeck>();
+            CreateMap<CardDeck, CreatedDeckDTO>();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace TheDarkTowerMVC.Controllers
     public class GameMasterController : Controller
     {
         private readonly ILogger<GameMasterController> _logger;
-        GameMasterService _gmService;
+        private GameMasterService _gmService;
 
         public GameMasterController(GameMasterService gmService, ILogger<GameMasterController> logger)
         {
@@ -56,6 +56,7 @@ namespace TheDarkTowerMVC.Controllers
             }
 
             _logger.LogInformation("GameMaster; CreateCard; Created Card with: id= " + card.Id + " & name = " + card.Name);
+            ViewData["GameCards"] = _gmService.GetGameCards();
             return Ok(card);
         }
 
@@ -81,6 +82,7 @@ namespace TheDarkTowerMVC.Controllers
 
             await _gmService.DeleteCards(cardsToDelete);
 
+            ViewData["GameCards"] = _gmService.GetGameCards();
 
 
             return Ok();

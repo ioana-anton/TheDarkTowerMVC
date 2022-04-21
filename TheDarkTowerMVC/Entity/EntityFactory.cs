@@ -7,7 +7,7 @@
         {
             var deck = new CardDeck();
 
-            deck.CreatedDateTime = DateTime.Now;
+            deck.CreatedDateTime = DateTime.UtcNow;
 
             return deck;
         }
