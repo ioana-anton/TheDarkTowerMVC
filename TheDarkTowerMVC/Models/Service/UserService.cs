@@ -41,6 +41,21 @@ namespace TheDarkTowerMVC.Models.Service
             return _mapper.Map<UserDTO>(user);
         }
 
+        public async Task<UserDTO> SendMessage(String id, List<String> friendId)
+        {
+            if (id == null) return null;
+            var user = await _userRepo.GetUserById(id);
+            try
+            {
+                await _userRepo.InsertNewMessage(user, friendId);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogError("UserService; SendMessage; Failed to insert new message.");
+            }
+            return _mapper.Map<UserDTO>(user);
+        }
+
         public List<InboxDTO> GetReceivedInbox(String id)
         {
             if (id == null) return null;

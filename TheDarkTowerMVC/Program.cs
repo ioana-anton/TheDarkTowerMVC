@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TheDarkTowerMVC.Data;
+using TheDarkTowerMVC.Models.Repository;
 using TheDarkTowerMVC.Models.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,12 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<UserService>();
+
+builder.Services.AddScoped<PlayerRepo>();
+builder.Services.AddScoped<PlayerService>();
+
+builder.Services.AddScoped<GameMasterRepo>();
+builder.Services.AddScoped<GameMasterService>();
 
 var app = builder.Build();
 

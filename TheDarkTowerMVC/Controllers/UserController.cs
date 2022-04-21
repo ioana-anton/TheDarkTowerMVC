@@ -23,6 +23,8 @@ namespace TownHall.Controllers
         [Route("login")]
         public IActionResult Index()
         {
+            HttpContext.Session.SetString("userid", "");
+            HttpContext.Session.SetString("userrole", "");
             return View();
         }
 
@@ -30,6 +32,8 @@ namespace TownHall.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
+            HttpContext.Session.SetString("userid", "");
+            HttpContext.Session.SetString("userrole", "");
             var user = await _userService.GetUserById(id);
 
             if (user == null) return NotFound();
@@ -162,6 +166,29 @@ namespace TownHall.Controllers
         }
 
         [HttpPost]
+        [Route("sendmessage")]
+        public async Task<IActionResult> AddMessage([FromBody] AddFriendDTO friendUsername)
+        {
+            if (friendUsername == null)
+            {
+                _logger.LogError(Error.USERCONTROLLER_ADD_FRIEND_1);
+                return BadRequest();
+            }
+
+            var id = HttpContext.Session.GetString("userid");
+            var ids = new List<String>();
+            ids.Add(friendUsername.Username);
+            var user = await _userService.SendMessage(id, ids);
+            if (user == null)
+            {
+                _logger.LogError(Error.USERCONTROLLER_ADD_FRIEND_2);
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
+        [HttpPost]
         [Route("login")]
 
         public async Task<IActionResult> LoginUser(LoginUserDTO loginUserDTO)
@@ -191,6 +218,7 @@ namespace TownHall.Controllers
 
 
             HttpContext.Session.SetString("userid", res.Id);
+            HttpContext.Session.SetString("userrole", res.Role.ToString());
 
             // return Redirect("/");
 

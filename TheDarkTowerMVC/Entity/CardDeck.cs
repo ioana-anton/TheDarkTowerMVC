@@ -3,6 +3,7 @@
     public class CardDeck
     {
         public String Id { get; set; } = Guid.NewGuid().ToString();
+        public String Name { get; set; }
         public String UserId { get; set; }
         public User User { get; set; }
         public Boolean byAdmin { get; set; }

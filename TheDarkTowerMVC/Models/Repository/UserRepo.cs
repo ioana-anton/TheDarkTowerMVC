@@ -59,6 +59,31 @@ public class UserRepo
         await databaseContext.SaveChangesAsync();
     }
 
+    public async Task InsertNewMessage(User user, List<String> recipientIds)
+    {
+        if (user == null) throw new ArgumentNullException("user");
+        else
+        {
+            var inbox = new Inbox();
+            List<Recipient> recipients = new List<Recipient>();
+            inbox.Sender = user;
+            foreach (var recipientId in recipientIds)
+            {
+                var recipientUser = databaseContext.Users.Where(u => u.Id.Equals(recipientId)).FirstOrDefault();
+                var recipient = new Recipient();
+                if (recipientUser != null)
+                {
+                    recipient.Receiver = recipientUser;
+                    Console.WriteLine("UseRepo; InsertNewMessage; recipientUser: " + recipient.Receiver.Username);
+                }
+                recipients.Add(recipient);
+            }
+            inbox.Recipients = recipients;
+            //databaseContext.Inbox.Add()
+        }
+        await databaseContext.SaveChangesAsync();
+    }
+
     public async Task InsertNewFriend(User user, String friendUsername)
     {
         if (user == null) throw new ArgumentNullException("user");

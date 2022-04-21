@@ -1,0 +1,137 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using TheDarkTowerMVC.Controllers
+@using TheDarkTowerMVC.DTO
+@{
+    List<GameCardDTO> cards = (List<GameCardDTO>)ViewData["GameCards"];
+}
+
+<h1>Create a new card!</h1>
+
+<form>
+    <label for="name">Name:</label>
+    <input id="name" name="name" />
+    <br>
+    <label for="power">Power:</label>
+    <input id="power" name="power" />
+    <br>
+    <label for="health">Health:</label>
+    <input id="health" name="health" />
+    <br>
+    <label for="description">Description:</label>
+    <input id="description" name="description" />
+    <br>
+    <button id="create-new-card-btn">Hocus Pocus!</button>
+</form>
+<p></p>
+@if (cards == null)
+{
+    <h2>You don't have any cards! :c </h2>
+}
+else
+{
+    <h2>Select cards to delete: </h2>
+    <form>
+        <select name="cardselect" id="cardselect" multiple>
+            @foreach (var card in cards)
+            {
+                @if (card != null)
+                {
+                    @*<tr>
+                        <!-- Table Row - 1 -->
+                        <td>@friend.Id</td>
+                        <td style="color:red;">@friend.Username</td>
+                        </tr>
+                        <br>*@
+                    <option value=@card.Name>@card.Name</option>
+
+                }
+                else
+                {
+                    <h2>You don't have any friends! :c </h2>
+                }
+            }
+        </select>
+        <br></br>
+        <input id="multiple-cards-submit" type="submit" value="Submit">
+    </form>
+}
+
+
+<script>
+    var btn2 = document.querySelector("#create-new-card-btn");
+    btn2.addEventListener("click", async e => {
+        e.preventDefault();
+        var name = document.querySelector("#name").value;
+        var power = document.querySelector("#power").value;
+        var health = document.querySelector("#health").value;
+        var description = document.querySelector("#description").value;
+
+        console.log(`GameCard: ${name},${power},${health},${description}`);
+
+        try {
+            var res2 = await fetch('https://localhost:7148/gm/createcard', {
+                method: "POST",
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    Name: name,
+                    Power: power,
+                    Health: health,
+                    Description: description
+                })
+            });
+
+            console.log(res2);
+
+            if(res2.redirected) window.location.href = res2.url;
+            var obj2 = await res2.json();
+            console.log(obj2);
+
+            //window.location.href = `${obj}`;
+        } catch(e) {
+            console.log(e);
+        }
+
+    })
+
+     var btn = document.querySelector("#multiple-cards-submit");
+    btn.addEventListener("click", async e => {
+        e.preventDefault();
+        var slct=document.getElementById("cardselect");
+        var options=slct.selectedOptions;
+        //var opt;
+        //var sub = document.getElementById("#multiple-cards-submit");
+         console.log(options);
+
+        //for(var i=0;i<options.length;i++){
+        //    opt.push(options[i]);
+        //}
+
+        var values = Array.from(options).map(({ value }) => value);
+
+        console.log(values);
+
+        try {
+            var res = await fetch('https://localhost:7148/gm/deletecards', {
+                method: "DELETE",
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    Cards : values
+                })
+            });
+
+            console.log(res);
+
+            if(res.redirected) window.location.href = res.url;
+
+            var obj = await res.json();
+            console.log(obj);
+
+            //window.location.href = `${obj}`;
+        } catch(e) {
+            console.log(e);
+        }
+
+    })
+</script>

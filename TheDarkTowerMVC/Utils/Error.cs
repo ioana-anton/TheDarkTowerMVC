@@ -13,5 +13,8 @@
 
         public readonly static String USERCONTROLLER_ADD_FRIEND_1 = "ERROR: UserController; AddFriend; NULL ERROR FROM INPUT";
         public readonly static String USERCONTROLLER_ADD_FRIEND_2 = "ERROR: UserController; AddFriend; NULL ERROR FROM USERSERVICE";
+
+        public readonly static String GAMEMASTERCONTROLLER_ADD_CARD_INPUT = "ERROR: GameMasterController; CreateCard; NULL ERROR FROM INPUT";
+        public readonly static String GAMEMASTERCONTROLLER_ADD_CARD_SERVICE = "ERROR: GameMasterController; CreateCard; NULL ERROR FROM SERVICE";
     }
 }

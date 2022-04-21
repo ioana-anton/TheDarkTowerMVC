@@ -13,34 +13,54 @@
 
 <form>
 
-    <select name="friend">
+    <select id="friends" name="friends">
         @*for each friend in friendlist*@
-        @if (friendList == null)
+        if (friendList != null)
+        @foreach (var friend in friendList)
         {
-            <h2>You don't have any friends! :c </h2>
-        }
-        else
-        {
-            @foreach (var friend in friendList)
+            @if (friend != null)
             {
-                @if (friend != null)
-                {
-                    <option value=@friend.Username>@friend.Username</option>
-                }
-                else
-                {
-                    <h2>You don't have any friends! :c </h2>
-                }
+                <option value=@friend.Username>@friend.Username</option>
             }
         }
     </select>
 
     @*<input id="username" name="username" />*@
     <br>
-    <label for="message">Messaage:</label>
+    <label for="message">Message:</label>
     <input id="message" name="message" />
     <br>
-    <button id="send-btn">Register</button>
+    <button id="send-btn">Send!</button>
 </form>
 
 
+<script>
+    var btn = document.querySelector("#send-btn");
+    btn.addEventListener("click", async e => {
+        e.preventDefault();
+        var fr = document.getElementById("#friends");
+        var uname = fr.options[fr.selectedIndex].text;
+        console.log("uname selectat: "+uname);
+
+        try {
+            var res = fetch('https://localhost:7148/user/sendmessage', {
+                method: "POST",
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    Username: uname
+                })
+            });
+
+            console.log(res);
+
+            if(res.redirected) window.location.href = res.url;
+            var obj = res.json();
+            console.log(obj);
+
+            //window.location.href = `${obj}`;
+        } catch(e) {
+            console.log(e);
+        }
+
+    })
+</script>

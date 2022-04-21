@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="/css/home.css" />
@@ -9,6 +11,35 @@
     @* <div class="darktowergif"></div>*@
 
     <img src="/css/images/darktower.gif" />
+
+    @{
+        @if (Context.Session.GetString("userid") != null)
+        {
+            <div class="btn-div">
+
+                @if (@Context.Session.GetString("userrole").Equals("0"))
+
+                {//Player
+
+                    <button class="player-view-decks-btn" onclick="window.location.href='https://localhost:7148/player/decks'">View Decks</button>
+
+                    <button class="invite-player-btn" onclick="window.location.href='https://localhost:7148/user/inbox'">Inbox</button>
+
+                }
+
+                @if (@Context.Session.GetString("userrole").Equals("2"))
+
+                {//GameMaster
+
+                    <button class="add-new-card-btn" onclick="window.location.href='https://localhost:7148/gm/createcard'">Create Card</button>
+
+
+
+                }
+            </div>
+
+        }
+    }
 
 </body>
 </html>

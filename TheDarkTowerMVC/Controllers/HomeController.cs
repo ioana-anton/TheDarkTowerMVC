@@ -15,8 +15,14 @@ namespace TheDarkTowerMVC.Controllers
 
         public IActionResult Index()
         {
+
             if (HttpContext.Session.GetString("userid") == null)
+            {
+                HttpContext.Session.SetString("userid", "");
+                HttpContext.Session.SetString("userrole", "");
                 return View("~/Views/User/Index.cshtml");
+            }
+
             return View();
         }
 
