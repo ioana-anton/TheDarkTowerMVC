@@ -24,7 +24,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     @* <ul class="navbar-nav flex-grow-1">*@
                     @{
-                        if (Context.Session.GetString("userid") != "")
+                        if (Context.Session.GetString("userid") != "" && Context.Session.GetString("userid") != null)
                         {
                             <div class="btn-div">
 

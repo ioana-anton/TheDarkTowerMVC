@@ -80,9 +80,9 @@ namespace TheDarkTowerMVC.Controllers
                 cardsToDelete.Add(deleteCard);
             }
 
-            await _gmService.DeleteCards(cardsToDelete);
+            var rez = await _gmService.DeleteCards(cardsToDelete);
 
-            ViewData["GameCards"] = _gmService.GetGameCards();
+            ViewData["GameCards"] = rez;
 
 
             return Ok();

@@ -2,7 +2,7 @@
 {
     public class Friend
     {
-        public String Id { get; set; }
+        public String Id { get; set; } = Guid.NewGuid().ToString();
 
         public User User { get; set; }
 

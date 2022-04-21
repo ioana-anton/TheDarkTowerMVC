@@ -9,7 +9,23 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/layout.css" />
+     <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
 </head>
 <body>
     <h1>Here are your friends! =＾● ⋏ ●＾= </h1>
@@ -26,7 +42,7 @@
         <h2>You don't have any friends! :c </h2>
     }
     else
-    {
+    {   <table>
         @foreach (var friend in friendList)
         {
             @if (friend != null)
@@ -43,6 +59,7 @@
                 <h2>You don't have any friends! :c </h2>
             }
         }
+        </table>
     }
 
 

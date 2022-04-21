@@ -23,15 +23,21 @@ public class UserRepo
         var messages = databaseContext.Inbox.Where(u => u.Sender.Id.Equals(id)).Include(x => x.Recipients).ToList();
         return messages;
     }
+    public List<CardDeck> GetCardDecks(String owner)
+    {
 
+        var decks = databaseContext.CardDecks.Where(y => y.UserId == owner || y.byAdmin).ToList();
+
+        return decks;
+    }
     public List<User> GetFriendList(String id)
     {
         if (id == null) throw new ArgumentNullException("id");
         var users = new List<User>();
         var friends = databaseContext.FriendList.Where(u => u.User.Id.Equals(id)).ToList();
-
-
-        Console.WriteLine("UserRepo; GetFriendList; " + friends[0].Id);
+        if (friends.Count > 0)
+            if (friends[0].Id != null && friends[0].Id != "")
+                Console.WriteLine("UserRepo; GetFriendList; " + friends[0].Id);
 
         foreach (var friend in friends)
         {
@@ -59,28 +65,33 @@ public class UserRepo
         await databaseContext.SaveChangesAsync();
     }
 
-    public async Task InsertNewMessage(User user, List<String> recipientIds)
+    public async Task InsertNewMessage(User user, User friend, String message)
     {
         if (user == null) throw new ArgumentNullException("user");
-        else
-        {
-            var inbox = new Inbox();
-            List<Recipient> recipients = new List<Recipient>();
-            inbox.Sender = user;
-            foreach (var recipientId in recipientIds)
-            {
-                var recipientUser = databaseContext.Users.Where(u => u.Id.Equals(recipientId)).FirstOrDefault();
-                var recipient = new Recipient();
-                if (recipientUser != null)
-                {
-                    recipient.Receiver = recipientUser;
-                    Console.WriteLine("UseRepo; InsertNewMessage; recipientUser: " + recipient.Receiver.Username);
-                }
-                recipients.Add(recipient);
-            }
-            inbox.Recipients = recipients;
-            //databaseContext.Inbox.Add()
-        }
+        //var inbox = new Inbox();
+        //List<Recipient> recipients = new List<Recipient>();
+        //inbox.Sender = user;
+        //foreach (var recipientId in recipientIds)
+        //{
+        //    var recipientUser = databaseContext.Users.Where(u => u.Id.Equals(recipientId)).FirstOrDefault();
+        //    var recipient = new Recipient();
+        //    if (recipientUser != null)
+        //    {
+        //        recipient.Receiver = recipientUser;
+        //        Console.WriteLine("UseRepo; InsertNewMessage; recipientUser: " + recipient.Receiver.Username);
+        //    }
+        //    recipients.Add(recipient);
+        //}
+        //inbox.Recipients = recipients;
+        ////databaseContext.Inbox.Add()
+        Inbox inbox = new Inbox();
+        inbox.Sender = user;
+        inbox.Message = message;
+        Recipient recipient = new Recipient();
+        recipient.Receiver = friend;
+        inbox.Recipients.Add(recipient);
+        databaseContext.Inbox.Add(inbox);
+
         await databaseContext.SaveChangesAsync();
     }
 

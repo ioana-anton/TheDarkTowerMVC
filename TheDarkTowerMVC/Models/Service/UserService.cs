@@ -26,6 +26,16 @@ namespace TheDarkTowerMVC.Models.Service
             return _mapper.Map<UserDTO>(user);
         }
 
+        public List<CardDeckDTO> GetCardDecks(String userId)
+        {
+            var decks = _userRepo.GetCardDecks(userId);
+            if (decks.Count == 0)
+            {
+                _logger.LogError("There are no decks!");
+                return null;
+            }
+            return _mapper.Map<List<CardDeckDTO>>(decks);
+        }
         public async Task<UserDTO> AddFriend(String id, String friendUsername)
         {
             if (id == null) return null;
@@ -41,13 +51,16 @@ namespace TheDarkTowerMVC.Models.Service
             return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<UserDTO> SendMessage(String id, List<String> friendId)
+        public async Task<UserDTO> SendMessage(String id, String friendID, String message)
         {
             if (id == null) return null;
             var user = await _userRepo.GetUserById(id);
             try
             {
-                await _userRepo.InsertNewMessage(user, friendId);
+                if (friendID == null) return null;
+                var userFriend = await _userRepo.GetUserById(friendID);
+                await _userRepo.InsertNewMessage(user, userFriend, message);
+
             }
             catch (ArgumentNullException e)
             {
@@ -86,15 +99,16 @@ namespace TheDarkTowerMVC.Models.Service
             {
                 if (id == null) return null;
                 var friends = _userRepo.GetFriendList(id);
-                if (friends[0] == null)
-                {
-                    _logger.LogError("UserService; Not able to find any friends!");
-                    return null;
-                }
-                else
-                {
-                    _logger.LogInformation("UserService; GetFriendList; There were " + friends.Count + " found!");
-                }
+                if (friends != null)
+                    if (friends[0] == null)
+                    {
+                        _logger.LogError("UserService; Not able to find any friends!");
+                        return null;
+                    }
+                    else
+                    {
+                        _logger.LogInformation("UserService; GetFriendList; There were " + friends.Count + " found!");
+                    }
                 return _mapper.Map<List<UserDTO>>(friends);
             }
             catch (ArgumentNullException e)

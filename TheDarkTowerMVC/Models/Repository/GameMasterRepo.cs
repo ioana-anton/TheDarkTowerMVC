@@ -22,7 +22,13 @@ namespace TheDarkTowerMVC.Models.Repository
 
             return card;
         }
+        public List<CardDeck> GetCardDecks(String owner)
+        {
 
+            var decks = databaseContext.CardDecks.Where(y => y.UserId == owner || y.byAdmin).ToList();
+
+            return decks;
+        }
 
 
         public async Task<GameCard> GetCardByName(String name)
@@ -55,10 +61,13 @@ namespace TheDarkTowerMVC.Models.Repository
             foreach (GameCard card in cards)
             {
                 databaseContext.GameCard.Remove(card);
+                var decks = databaseContext.CardDecks.Where(u => u.Cards.Contains(card)).ToList();
+                foreach (CardDeck deck in decks)
+                    databaseContext.CardDecks.Remove(deck);
+
+                await databaseContext.SaveChangesAsync();
             }
-
-            await databaseContext.SaveChangesAsync();
         }
-    }
 
+    }
 }

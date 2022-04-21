@@ -28,6 +28,17 @@ namespace TheDarkTowerMVC.Models.Service
             return _mapper.Map<GameCardDTO>(card);
         }
 
+        public List<CardDeckDTO> GetCardDecks(String userId)
+        {
+            var decks = _gmRepo.GetCardDecks(userId);
+            if (decks.Count == 0)
+            {
+                _logger.LogError("There are no decks!");
+                return null;
+            }
+            return _mapper.Map<List<CardDeckDTO>>(decks);
+        }
+
         public async Task<GameCardDTO> CreateCard(AddCardDTO addCard)
         {
             // EntityFactory cardFactory = new EntityFactory();
@@ -58,7 +69,7 @@ namespace TheDarkTowerMVC.Models.Service
             return _mapper.Map<List<GameCardDTO>>(cards);
         }
 
-        public async Task DeleteCards(List<DeleteCardDTO> cards)
+        public async Task<List<GameCardDTO>> DeleteCards(List<DeleteCardDTO> cards)
         {
             var gameCardsToDelete = new List<GameCard>();
             foreach (var card in cards)
@@ -70,6 +81,9 @@ namespace TheDarkTowerMVC.Models.Service
             }
             if (gameCardsToDelete.Count != 0)
                 await _gmRepo.DeleteCards(gameCardsToDelete);
+
+            var rez = _gmRepo.GetGameCards();
+            return _mapper.Map<List<GameCardDTO>>(rez);
         }
     }
 }

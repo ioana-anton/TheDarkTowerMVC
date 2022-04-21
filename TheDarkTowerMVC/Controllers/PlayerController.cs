@@ -21,7 +21,7 @@ namespace TheDarkTowerMVC.Controllers
         [Route("index")]
         public IActionResult Index()
         {
-            ViewData["GameCards"] = _playerService.GetGameCards();
+            // ViewData["GameCards"] = _playerService.GetGameCards();
             return View();
         }
 
@@ -40,8 +40,8 @@ namespace TheDarkTowerMVC.Controllers
         public IActionResult AddDeck()
         {
             ViewData["GameCards"] = _playerService.GetGameCards();
-            var id = HttpContext.Session.GetString("userid");
-            ViewData["CardDecks"] = _playerService.GetCardDecks(id);
+            // var id = HttpContext.Session.GetString("userid");
+            // ViewData["CardDecks"] = _playerService.GetCardDecks(id);
             return View();
         }
 

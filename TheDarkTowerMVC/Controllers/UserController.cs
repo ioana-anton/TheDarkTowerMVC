@@ -6,6 +6,9 @@ using TheDarkTowerMVC.Utils;
 
 namespace TownHall.Controllers
 {
+    /// <summary>
+    ///  This class represents the main controller of the application.
+    /// </summary>
     [ApiController]
     [Route("/user")]
     public class UserController : Controller
@@ -13,18 +16,26 @@ namespace TownHall.Controllers
         UserService _userService;
         private readonly ILogger<UserController> _logger;
 
+        /// <summary>
+        /// The constructor uses both the service linked to the constructor and a logger for keeping track of data.
+        /// </summary>
+        /// <param name="userService">Represents the service class linked to this controller.</param>
+        /// <param name="logger">Represents the logger used inside this class for outputing status updates.</param>
         public UserController(UserService userService, ILogger<UserController> logger)
         {
             _userService = userService;
             _logger = logger;
         }
 
+        /// <summary>
+        /// The main HttpGet which returns the homepage of this controller.
+        /// </summary>
+        /// <returns>Returns the homepage view of the controller.</returns>
         [HttpGet]
         [Route("login")]
         public IActionResult Index()
         {
-            HttpContext.Session.SetString("userid", "");
-            HttpContext.Session.SetString("userrole", "");
+
             return View();
         }
 
@@ -32,14 +43,18 @@ namespace TownHall.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
-            HttpContext.Session.SetString("userid", "");
-            HttpContext.Session.SetString("userrole", "");
             var user = await _userService.GetUserById(id);
+
+            HttpContext.Session.SetString("userid", id);
 
             if (user == null) return NotFound();
             return Ok(user);
         }
 
+        /// <summary>
+        /// Getter for the Register view.
+        /// </summary>
+        /// <returns>Returns the register view of the controller.</returns>
         [HttpGet]
         [Route("register")]
         public IActionResult Register()
@@ -47,6 +62,10 @@ namespace TownHall.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Getter for the Account View.
+        /// </summary>
+        /// <returns>Returns the account view of the controller.</returns>
         [HttpGet]
         [Route("account")]
         public IActionResult Account()
@@ -54,11 +73,17 @@ namespace TownHall.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// Getter for the FriendList View.
+        /// </summary>
+        /// <returns>Returns the friendList view of the controller, populated with the current user's friends.</returns>
         [HttpGet]
         [Route("friendlist")]
         public IActionResult FriendList()
         {
             var id = HttpContext.Session.GetString("userid");
+            if (id == null || id == "") return NotFound();
             var friendList = _userService.GetFriendList(id);
             if (friendList == null)
             {
@@ -67,24 +92,31 @@ namespace TownHall.Controllers
             }
             else
             {
-                //ViewData["FriendList"] = friendList;
-                ViewData.Add("FriendList", friendList);
-                if (friendList[0] != null)
-                    _logger.LogInformation("UserController; SendMessage; Returned succesfully from UserService/GetFriendList! Number of friends found: " + friendList.Count);
-                //Console.WriteLine(friendList[0]);
-                else
-                {
-                    _logger.LogError("UserController; SendMessage; No friends found!");
-                }
+                ViewData["FriendList"] = friendList;
+                // ViewData.Add("FriendList", friendList);
+                if (friendList != null)
+                    if (friendList.Count > 0)
+                        if (friendList[0] != null)
+                            _logger.LogInformation("UserController; SendMessage; Returned succesfully from UserService/GetFriendList! Number of friends found: " + friendList.Count);
+                        //Console.WriteLine(friendList[0]);
+                        else
+                        {
+                            //  _logger.LogError("UserController; SendMessage; No friends found!");
+                        }
             }
             return View();
         }
 
+        /// <summary>
+        /// Getter for the Send Message View.
+        /// </summary>
+        /// <returns>Returns the Send Message View of the Controller.</returns>
         [HttpGet]
         [Route("sendmessage")] //as soon as this page opens
         public IActionResult SendMessage()
         {
             var id = HttpContext.Session.GetString("userid");
+            if (id == null || id == "") return NotFound();
             _logger.LogInformation("UserController; SendMessage; Current user: " + id);
             var friendList = _userService.GetFriendList(id);
             if (friendList == null)
@@ -104,16 +136,22 @@ namespace TownHall.Controllers
                     _logger.LogError("UserController; SendMessage; No friends found!");
                 }
             }
+
+
             return View();
         }
 
+        /// <summary>
+        /// Getter for the Inbox View.
+        /// </summary>
+        /// <returns>Returns the Inbox View of the curent User, onky received messages(not sent ones).</returns>
         [HttpGet]
         [Route("inbox")]
         public IActionResult Inbox()
         {
             var id = HttpContext.Session.GetString("userid");
 
-            if (id == null) return NotFound();
+            if (id == null || id == "") return NotFound();
             var received = _userService.GetReceivedInbox(id);
 
             ViewData["ReceivedInbox"] = received;
@@ -123,6 +161,11 @@ namespace TownHall.Controllers
             return View();
         }
 
+        /// <summary>
+        /// HttpPost method for registering a new user account.
+        /// </summary>
+        /// <param name="createUserDTO">Represents the data brought from the user interface.</param>
+        /// <returns>Returns the confirmation that a user has been created.</returns>
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> CreateUser(CreateUserDTO createUserDTO)
@@ -144,6 +187,11 @@ namespace TownHall.Controllers
             return Ok(user);
         }
 
+        /// <summary>
+        /// HttpPost method for adding new friends.
+        /// </summary>
+        ///<param name="friendUsername">Field populated from the UI with the username of the other user.</param>
+        /// <returns>Returns the confirmation that a friendRequest has been sent.</returns>
         [HttpPost]
         [Route("friendlist")]
         public async Task<IActionResult> AddFriend([FromBody] AddFriendDTO friendUsername)
@@ -165,29 +213,42 @@ namespace TownHall.Controllers
             return Ok(user);
         }
 
+        /// <summary>
+        /// HttpPost method for sending messages.
+        /// </summary>
+        ///<param name="friendUsername">Field populated from the UI with the username of the recipient.</param>
+        /// <returns>Returns the confirmation that a message has been sent.</returns>
         [HttpPost]
         [Route("sendmessage")]
-        public async Task<IActionResult> AddMessage([FromBody] AddFriendDTO friendUsername)
+        public async Task<IActionResult> AddMessage([FromBody] SendMessageDTO msgData)
         {
-            if (friendUsername == null)
+            if (msgData == null)
             {
                 _logger.LogError(Error.USERCONTROLLER_ADD_FRIEND_1);
                 return BadRequest();
             }
 
             var id = HttpContext.Session.GetString("userid");
-            var ids = new List<String>();
-            ids.Add(friendUsername.Username);
-            var user = await _userService.SendMessage(id, ids);
+            var message = msgData.Message;
+            var friend = msgData.Recipient;
+
+            var user = await _userService.SendMessage(id, friend, message);
             if (user == null)
             {
                 _logger.LogError(Error.USERCONTROLLER_ADD_FRIEND_2);
                 return NotFound();
             }
 
+            _logger.LogInformation("Sent message with success!");
+
             return Ok(user);
         }
 
+        /// <summary>
+        /// HttpPost method for login.
+        /// </summary>
+        ///<param name="loginUserDTO">Populated with the login data from the UI.</param>
+        /// <returns>The user is redirected to the main page of the application</returns>
         [HttpPost]
         [Route("login")]
 
@@ -206,19 +267,14 @@ namespace TownHall.Controllers
                 _logger.LogInformation("UserController: Rol user: " + res.Role);
             }
 
-            //CardDeck cardDeck = EntityFactory.createDefaultCardDeck();
-
-            //Console.Write("Test default deck: " + cardDeck.CreatedDateTime);
-
-            //CardBuilder cardBuilder = new CardBuilder();
-
-            //GameCard card = cardBuilder.setPower(100).setHealth(10).build();
-
-            //Console.Write("Test card builder: power: " + card.Power + " health: " + card.Health);
-
 
             HttpContext.Session.SetString("userid", res.Id);
             HttpContext.Session.SetString("userrole", res.Role.ToString());
+
+            //var id = HttpContext.Session.GetString("userid");
+            //ViewData["CardDecks"] = _userService.GetCardDecks(res.Id);
+            //ViewData["GameCards"] = _userService.Get
+
 
             // return Redirect("/");
 

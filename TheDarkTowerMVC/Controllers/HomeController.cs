@@ -19,8 +19,8 @@ namespace TheDarkTowerMVC.Controllers
 
             if (HttpContext.Session.GetString("userid") == null)
             {
-                HttpContext.Session.SetString("userid", "");
-                HttpContext.Session.SetString("userrole", "");
+                //HttpContext.Session.SetString("userid", "");
+                //HttpContext.Session.SetString("userrole", "");
 
                 return View("~/Views/User/Index.cshtml");
             }

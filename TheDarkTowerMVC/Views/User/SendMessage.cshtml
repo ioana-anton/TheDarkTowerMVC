@@ -30,7 +30,7 @@
     <label for="message">Message:</label>
     <input id="message" name="message" />
     <br>
-    <button id="send-btn">Send!</button>
+    <input id="send-btn" type="submit" value="Send">
 </form>
 
 
@@ -38,8 +38,9 @@
     var btn = document.querySelector("#send-btn");
     btn.addEventListener("click", async e => {
         e.preventDefault();
-        var fr = document.getElementById("#friends");
-        var uname = fr.options[fr.selectedIndex].text;
+        var fr = document.getElementById("friends");
+        var uname = fr.options[fr.selectedIndex].value;
+        var message = document.getElementById("message").value;
         console.log("uname selectat: "+uname);
 
         try {
@@ -47,7 +48,8 @@
                 method: "POST",
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    Username: uname
+                    Recipient: uname,
+                    Message: message
                 })
             });
 
