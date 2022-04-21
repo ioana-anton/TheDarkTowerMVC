@@ -14,6 +14,10 @@ namespace TheDarkTowerMVC.Profiles
             CreateMap<UserDTO, User>();
             CreateMap<UserDTO, LoginUserDTO>();
             CreateMap<LoginUserDTO, UserDTO>();
+            CreateMap<AddFriendDTO, User>();
+            CreateMap<User, AddFriendDTO>();
+            // CreateMap<List<User>, List<UserDTO>>();
+            // CreateMap<List<UserDTO>, List<User>>();
         }
     }
 }

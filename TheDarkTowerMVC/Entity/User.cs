@@ -15,5 +15,7 @@
         public List<CardDeck> Decks { get; set; }
 
         public List<Inbox> Inboxes { get; set; }
+
+        public List<Friend> Friends { get; set; }
     }
 }

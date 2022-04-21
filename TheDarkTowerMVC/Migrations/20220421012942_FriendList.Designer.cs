@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TheDarkTowerMVC.Data;
@@ -11,9 +12,10 @@ using TheDarkTowerMVC.Data;
 namespace TheDarkTowerMVC.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220421012942_FriendList")]
+    partial class FriendList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,17 +76,18 @@ namespace TheDarkTowerMVC.Migrations
                     b.ToTable("CardDecks");
                 });
 
-            modelBuilder.Entity("TheDarkTowerMVC.Entity.Friend", b =>
+            modelBuilder.Entity("TheDarkTowerMVC.Entity.FriendList", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("FriendId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FriendId");
 
                     b.ToTable("FriendList");
                 });
@@ -110,7 +113,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameCard");
+                    b.ToTable("GameCards");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Inbox", b =>
@@ -129,7 +132,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Inbox");
+                    b.ToTable("Inboxes");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Recipient", b =>
@@ -209,13 +212,15 @@ namespace TheDarkTowerMVC.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TheDarkTowerMVC.Entity.Friend", b =>
+            modelBuilder.Entity("TheDarkTowerMVC.Entity.FriendList", b =>
                 {
-                    b.HasOne("TheDarkTowerMVC.Entity.User", "User")
+                    b.HasOne("TheDarkTowerMVC.Entity.User", "Friend")
                         .WithMany("Friends")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("FriendId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Friend");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Inbox", b =>

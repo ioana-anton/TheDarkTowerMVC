@@ -24,11 +24,13 @@ namespace TheDarkTowerMVC.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<CardDeck> CardDecks { get; set; }
-        public DbSet<GameCard> GameCards { get; set; }
+        public DbSet<GameCard> GameCard { get; set; }
 
-        public DbSet<Inbox> Inboxes { get; set; }
+        public DbSet<Inbox> Inbox { get; set; }
 
         public DbSet<Recipient> Recipients { get; set; }
+
+        public DbSet<Friend> FriendList { get; set; }
 
 
         //new thingy

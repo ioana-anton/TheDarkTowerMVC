@@ -19,14 +19,31 @@ namespace TheDarkTowerMVC.Models.Service
             _logger = logger;
         }
 
-        public async Task<UserDTO> GetUserById(string id)
+        public async Task<UserDTO> GetUserById(String id)
         {
+            if (id == null) return null;
             var user = await _userRepo.GetUserById(id);
             return _mapper.Map<UserDTO>(user);
         }
 
-        public List<InboxDTO> GetReceivedInbox(string id)
+        public async Task<UserDTO> AddFriend(String id, String friendUsername)
         {
+            if (id == null) return null;
+            var user = await _userRepo.GetUserById(id);
+            try
+            {
+                await _userRepo.InsertNewFriend(user, friendUsername);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogError("UserService; AddFriend; Failed to insert friend.");
+            }
+            return _mapper.Map<UserDTO>(user);
+        }
+
+        public List<InboxDTO> GetReceivedInbox(String id)
+        {
+            if (id == null) return null;
             var inboxes = _userRepo.GetReceivedInbox(id);
 
             InboxDTOBuilder inboxDTOBuilder = new InboxDTOBuilder();
@@ -48,11 +65,44 @@ namespace TheDarkTowerMVC.Models.Service
             return inboxDTOList;
         }
 
+        public List<UserDTO> GetFriendList(String id)
+        {
+            try
+            {
+                if (id == null) return null;
+                var friends = _userRepo.GetFriendList(id);
+                if (friends[0] == null)
+                {
+                    _logger.LogError("UserService; Not able to find any friends!");
+                    return null;
+                }
+                else
+                {
+                    _logger.LogInformation("UserService; GetFriendList; There were " + friends.Count + " found!");
+                }
+                return _mapper.Map<List<UserDTO>>(friends);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogError(e.Message);
+            }
+            return null;
+        }
+
         public async Task<UserDTO> CreateUser(CreateUserDTO createUserDTO)
         {
             var user = _mapper.Map<User>(createUserDTO);
             user.Password = Encryption.CreateMd5(user.Password);
-            await _userRepo.InsertNewUser(user);
+
+            try
+            {
+                await _userRepo.InsertNewUser(user);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogError(e.Message);
+            }
+
             _logger.LogInformation("UserService; User id inserat: " + user.Id);
             return await GetUserById(user.Id);
         }

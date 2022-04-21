@@ -1,0 +1,81 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using TheDarkTowerMVC.Controllers
+@using TheDarkTowerMVC.DTO
+
+@{
+    List<UserDTO> friendList = ViewData["FriendList"] as List<UserDTO>;
+}
+<head>
+    <link rel="stylesheet" href="~/css/layout.css" />
+
+</head>
+<body>
+    <h1>Here are your friends! =＾● ⋏ ●＾= </h1>
+    <br>
+    <form>
+        <label for="friendUsername">Player username:</label>
+        <input id="friendUsername" name="friendUsername" />
+        <p></p> <br>
+        <button id="add-friend-btn">Send friend request!</button>
+    </form>
+    <p></p>
+    @if (friendList == null)
+    {
+        <h2>You don't have any friends! :c </h2>
+    }
+    else
+    {
+        @foreach (var friend in friendList)
+        {
+            @if (friend != null)
+            {
+                <tr>
+                    <!-- Table Row - 1 -->
+        <td>@friend.Id</td>
+                    <td style="color:red;">@friend.Username</td>
+                </tr>
+                <br>
+            }
+            else
+            {
+                <h2>You don't have any friends! :c </h2>
+            }
+        }
+    }
+
+
+</body>
+
+<script>
+    var btn = document.querySelector("#add-friend-btn");
+    btn.addEventListener("click", async e => {
+        e.preventDefault();
+        var uname = document.querySelector("#friendUsername").value;
+        console.log("uname introdus: "+uname);
+
+        try {
+            var res = fetch('https://localhost:7148/user/friendlist', {
+                method: "POST",
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    Username: uname,
+                })
+            });
+
+            console.log(res);
+
+            if(res.redirected) window.location.href = res.url;
+            var obj = res.json();
+            console.log(obj);
+
+            //window.location.href = `${obj}`;
+        } catch(e) {
+            console.log(e);
+        }
+
+    })
+</script>
+
+

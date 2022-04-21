@@ -1,21 +1,32 @@
 ﻿.logout-btn {
-    height: 80%;
-    width: 30%;
-    background-color: azure;
-    font-palette: dark;
+    height: 100%;
+    width: 20%;
+    /* background-color: azure;
+    font-palette: dark;*/
 }
 
 .account-btn {
-    height: 80%;
-    width: 30%;
+    height: 100%;
+    width: 20%;
 }
 
 .inbox-btn {
     height: 100%;
-    width: 30%;
+    width: 20%;
 }
 
 .btn-div {
     height: 100%;
-    width: 50%;
+    width: 80%;
+}
+
+.friends-btn {
+    height: 100%;
+    width: 20%;
+}
+
+#add-friend-btn {
+}
+
+#friendUsername {
 }

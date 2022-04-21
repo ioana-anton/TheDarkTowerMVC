@@ -20,16 +20,66 @@ public class UserRepo
 
     public List<Inbox> GetReceivedInbox(String id)
     {
-        var messages = databaseContext.Inboxes.Where(u => u.Sender.Id.Equals(id)).Include(x => x.Recipients).ToList();
+        var messages = databaseContext.Inbox.Where(u => u.Sender.Id.Equals(id)).Include(x => x.Recipients).ToList();
         return messages;
     }
 
+    public List<User> GetFriendList(String id)
+    {
+        if (id == null) throw new ArgumentNullException("id");
+        var users = new List<User>();
+        var friends = databaseContext.FriendList.Where(u => u.User.Id.Equals(id)).ToList();
+
+
+        Console.WriteLine("UserRepo; GetFriendList; " + friends[0].Id);
+
+        foreach (var friend in friends)
+        {
+            var user = databaseContext.Users.Where(u => u.Id.Equals(friend.Id)).ToList().FirstOrDefault();
+            Console.WriteLine("UserRepo; GetFriendList; FriendId" + friend.Id);
+            // Console.WriteLine("UserRepo; GetFriendList; FriendUser" + friend.User.Username);
+            users.Add(user);
+        }
+        if (users.Count == 0)
+        {
+            Console.WriteLine("UserRepo; GetFriendList; No friends found!");
+            return null;
+        }
+
+        Console.WriteLine("UserRepo; GetFriendList; There were " + users.Count + " friends found!");
+
+        return users;
+    }
 
     public async Task InsertNewUser(User user)
     {
         if (user == null) throw new ArgumentNullException("user");
         else
             databaseContext.Users.Add(user);
+        await databaseContext.SaveChangesAsync();
+    }
+
+    public async Task InsertNewFriend(User user, String friendUsername)
+    {
+        if (user == null) throw new ArgumentNullException("user");
+        else
+        {
+            //databaseContext.Users.Add(user);
+            var friendUser = databaseContext.Users.Where(u => u.Username.Equals(friendUsername)).ToList().FirstOrDefault();
+            if (friendUser == null) throw new ArgumentNullException("friend");
+            var friend = new Friend();
+            friend.Id = friendUser.Id;
+            friend.User = user;
+
+            databaseContext.Add(friend);
+
+            var friend2 = new Friend();
+            friend2.Id = user.Id;
+            friend2.User = friendUser;
+
+            databaseContext.Add(friend2);
+
+        }
         await databaseContext.SaveChangesAsync();
     }
 

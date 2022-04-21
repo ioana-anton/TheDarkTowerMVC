@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TheDarkTowerMVC.Data;
@@ -11,9 +12,10 @@ using TheDarkTowerMVC.Data;
 namespace TheDarkTowerMVC.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220421014521_FriendListFix3")]
+    partial class FriendListFix3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,7 +76,7 @@ namespace TheDarkTowerMVC.Migrations
                     b.ToTable("CardDecks");
                 });
 
-            modelBuilder.Entity("TheDarkTowerMVC.Entity.Friend", b =>
+            modelBuilder.Entity("TheDarkTowerMVC.Entity.FriendList", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -86,7 +88,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FriendList");
+                    b.ToTable("Friends");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.GameCard", b =>
@@ -110,7 +112,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameCard");
+                    b.ToTable("GameCards");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Inbox", b =>
@@ -129,7 +131,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Inbox");
+                    b.ToTable("Inboxes");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Recipient", b =>
@@ -209,7 +211,7 @@ namespace TheDarkTowerMVC.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TheDarkTowerMVC.Entity.Friend", b =>
+            modelBuilder.Entity("TheDarkTowerMVC.Entity.FriendList", b =>
                 {
                     b.HasOne("TheDarkTowerMVC.Entity.User", "User")
                         .WithMany("Friends")

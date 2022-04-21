@@ -51,9 +51,55 @@ namespace TownHall.Controllers
         }
 
         [HttpGet]
-        [Route("sendmessage")]
+        [Route("friendlist")]
+        public IActionResult FriendList()
+        {
+            var id = HttpContext.Session.GetString("userid");
+            var friendList = _userService.GetFriendList(id);
+            if (friendList == null)
+            {
+                _logger.LogError("Didn't find any friends!");
+                return NotFound();
+            }
+            else
+            {
+                //ViewData["FriendList"] = friendList;
+                ViewData.Add("FriendList", friendList);
+                if (friendList[0] != null)
+                    _logger.LogInformation("UserController; SendMessage; Returned succesfully from UserService/GetFriendList! Number of friends found: " + friendList.Count);
+                //Console.WriteLine(friendList[0]);
+                else
+                {
+                    _logger.LogError("UserController; SendMessage; No friends found!");
+                }
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [Route("sendmessage")] //as soon as this page opens
         public IActionResult SendMessage()
         {
+            var id = HttpContext.Session.GetString("userid");
+            _logger.LogInformation("UserController; SendMessage; Current user: " + id);
+            var friendList = _userService.GetFriendList(id);
+            if (friendList == null)
+            {
+                _logger.LogError("UserController; Haven't found any friends!");
+                return NotFound();
+            }
+            else
+            {
+                //ViewData["FriendList"] = friendList;
+                ViewData.Add("FriendList", friendList);
+                if (friendList[0] != null)
+                    _logger.LogInformation("UserController; SendMessage; Returned succesfully from UserService/GetFriendList! Number of friends found: " + friendList.Count);
+                //Console.WriteLine(friendList[0]);
+                else
+                {
+                    _logger.LogError("UserController; SendMessage; No friends found!");
+                }
+            }
             return View();
         }
 
@@ -95,6 +141,27 @@ namespace TownHall.Controllers
         }
 
         [HttpPost]
+        [Route("friendlist")]
+        public async Task<IActionResult> AddFriend([FromBody] AddFriendDTO friendUsername)
+        {
+            if (friendUsername == null)
+            {
+                _logger.LogError(Error.USERCONTROLLER_ADD_FRIEND_1);
+                return BadRequest();
+            }
+
+            var id = HttpContext.Session.GetString("userid");
+            var user = await _userService.AddFriend(id, friendUsername.Username);
+            if (user == null)
+            {
+                _logger.LogError(Error.USERCONTROLLER_ADD_FRIEND_2);
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
+        [HttpPost]
         [Route("login")]
 
         public async Task<IActionResult> LoginUser(LoginUserDTO loginUserDTO)
@@ -127,10 +194,10 @@ namespace TownHall.Controllers
 
             // return Redirect("/");
 
-            if (res.Role == 0)
-                return Redirect("/user/register");
+            //if (res.Role == 0)
+            // return Redirect("/user/register");
 
-            return Redirect("/user/login");
+            return Redirect("/");
 
         }
 

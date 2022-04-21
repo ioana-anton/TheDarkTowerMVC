@@ -1,7 +1,46 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
+@using TheDarkTowerMVC.Controllers
+@using TheDarkTowerMVC.DTO
 @{
+    // List<UserDTO> friendList = (List<UserDTO>)ViewData["FriendList"];
+    List<UserDTO> friendList = ViewData["FriendList"] as List<UserDTO>;
 }
 
-<p>Send a message!</p>
+<h1>Send a message to your friends!</h1>
+
+<form>
+
+    <select name="friend">
+        @*for each friend in friendlist*@
+        @if (friendList == null)
+        {
+            <h2>You don't have any friends! :c </h2>
+        }
+        else
+        {
+            @foreach (var friend in friendList)
+            {
+                @if (friend != null)
+                {
+                    <option value=@friend.Username>@friend.Username</option>
+                }
+                else
+                {
+                    <h2>You don't have any friends! :c </h2>
+                }
+            }
+        }
+    </select>
+
+    @*<input id="username" name="username" />*@
+    <br>
+    <label for="message">Messaage:</label>
+    <input id="message" name="message" />
+    <br>
+    <button id="send-btn">Register</button>
+</form>
+
+
