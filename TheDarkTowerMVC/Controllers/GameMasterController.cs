@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text;
 using TheDarkTowerMVC.DTO;
 using TheDarkTowerMVC.Models.Service;
 using TheDarkTowerMVC.Utils;
@@ -11,6 +13,8 @@ namespace TheDarkTowerMVC.Controllers
     {
         private readonly ILogger<GameMasterController> _logger;
         private GameMasterService _gmService;
+        static readonly HttpClient client = new HttpClient();
+
 
         public GameMasterController(GameMasterService gmService, ILogger<GameMasterController> logger)
         {
@@ -38,10 +42,38 @@ namespace TheDarkTowerMVC.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("createmail")]
+        public IActionResult CreateEmail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("createemail")]
+        public IActionResult CreateEnail(EmailDTO email)
+        {
+            Console.WriteLine("Bunaaaaaaaaa! ");
+            //EmailDTO emailDTO = new EmailDTO();
+            //emailDTO.Text = "acesta este text din c#!";
+            //emailDTO.Email = "imiplac@ciresele.org";
+            //var json = JsonConvert.SerializeObject(emailDTO);
+            //var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
+
+            // HttpResponseMessage response = await client.PostAsync("hhttp://localhost:8081/gm/sendemail", content);
+            // response.EnsureSuccessStatusCode();
+            // string responseBody = await response.Content.ReadAsStringAsync();
+
+            //return Content("<script>window.location = 'localhost: ';</script>");
+            return View("CreateEmail");
+        }
+
         [HttpPost]
         [Route("createcard")]
         public async Task<IActionResult> CreateCard([FromBody] AddCardDTO cardDTO)
         {
+            Console.WriteLine("GmController: Hawo!");
+
             if (cardDTO.Name == null)
             {
                 _logger.LogError(Error.GAMEMASTERCONTROLLER_ADD_CARD_INPUT);

@@ -7,5 +7,6 @@
         public String UserId { get; set; }
         public Boolean byAdmin { get; set; }
         public DateTime CreatedDateTime { get; set; }
+        public List<GameCardDTO> Cards { get; set; }
     }
 }

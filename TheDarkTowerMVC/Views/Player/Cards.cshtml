@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using TheDarkTowerMVC.Controllers
+@using TheDarkTowerMVC.DTO
+
+@{
+    //List<CardDeckDTO> cardDecks = ViewData["CardDecks"] as List<CardDeckDTO>;
+    List<GameCardDTO> cards = ViewData["cardsFromDeck"] as List<GameCardDTO>;
+}
+<head>
+    <link rel="stylesheet" href="~/css/cards.css" />
+</head>
+
+<body>
+    @if (cards != null)
+    {
+        <div class="card-grid">
+            Console.WriteLine("pachetul are: " + @cards.Count + " carti;");
+            @foreach (var card in cards)
+            {
+                <div class="card"><img href=@card.ImageLink></div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <p>This deck is empty!!!!</p>
+    }
+</body>

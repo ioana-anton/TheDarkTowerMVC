@@ -9,7 +9,7 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/layout.css" />
-     <style>
+    <style>
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
@@ -42,23 +42,26 @@
         <h2>You don't have any friends! :c </h2>
     }
     else
-    {   <table>
-        @foreach (var friend in friendList)
-        {
-            @if (friend != null)
+    {
+        <table>
+            @foreach (var friend in friendList)
             {
-                <tr>
-                    <!-- Table Row - 1 -->
-        <td>@friend.Id</td>
-                    <td style="color:red;">@friend.Username</td>
-                </tr>
-                <br>
+                @if (friend != null)
+                {
+                    <tr>
+                        <!-- Table Row - 1 -->
+            <td>@friend.Id</td>
+                        <td style="color:red;">@friend.Username</td>
+                        @*<img src="https://assets.pokemon.com/assets/cms2/img/cards/web/XYP/XYP_EN_XY40.png" />*@
+                    </tr>
+
+                    <br>
+                }
+                else
+                {
+                    <h2>You don't have any friends! :c </h2>
+                }
             }
-            else
-            {
-                <h2>You don't have any friends! :c </h2>
-            }
-        }
         </table>
     }
 
@@ -70,7 +73,7 @@
     btn.addEventListener("click", async e => {
         e.preventDefault();
         var uname = document.querySelector("#friendUsername").value;
-        console.log("uname introdus: "+uname);
+        console.log("uname introdus: "+ uname);
 
         try {
             var res = fetch('https://localhost:7148/user/friendlist', {

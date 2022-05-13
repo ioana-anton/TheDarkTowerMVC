@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,10 +13,10 @@
     <link rel="stylesheet" href="~/css/layout.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <header id="header-bar">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light mb-3 border-bottom">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TheDarkTowerMVC</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/css/images/Title.png" height="65" width="200"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,14 +29,17 @@
                         {
                             <div class="btn-div">
 
-                                <button class="account-btn" onclick="window.location.href='https://localhost:7148/user/account'">Account</button>
+                                <button class="list-btn account-btn" onclick="window.location.href='https://localhost:7148/user/account'">Account</button>
 
-                                <button class="inbox-btn" onclick="window.location.href='https://localhost:7148/user/inbox'">Inbox</button>
+                                <button class="list-btn inbox-btn" onclick="window.location.href='https://localhost:7148/user/inbox'">Inbox</button>
 
-                                <button class="friends-btn" onclick="window.location.href='https://localhost:7148/user/friendlist'">Friend List</button>
+                                <button class="list-btn friends-btn" onclick="window.location.href='https://localhost:7148/user/friendlist'">Friend List</button>
 
-                                <button class="logout-btn" onclick="window.location.href='https://localhost:7148/user/login'">Log out</button>
+                                <button class="list-btn logout-btn" onclick="window.location.href='https://localhost:7148/user/login'">Log out</button>
                             </div>
+                        }
+                        else
+                        {
 
                         }
                     }
@@ -52,11 +56,6 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - TheDarkTowerMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -4,7 +4,7 @@
 
 namespace TheDarkTowerMVC.Migrations
 {
-    public partial class FriendListFix3 : Migration
+    public partial class Classes1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

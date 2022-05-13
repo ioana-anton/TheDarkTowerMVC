@@ -45,6 +45,8 @@ namespace TheDarkTowerMVC.Models.Service
 
             CardBuilder cardBuilder = new CardBuilder();
 
+            Console.WriteLine("GmService: Hawo!");
+
             var card = cardBuilder.setPower(addCard.Power).setName(addCard.Name).setHealth(addCard.Health).setDescription(addCard.Description).build();
             try
             {

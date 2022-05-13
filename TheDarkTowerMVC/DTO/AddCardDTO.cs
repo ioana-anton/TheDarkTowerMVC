@@ -9,5 +9,7 @@ namespace TheDarkTowerMVC.DTO
         public int Health { get; set; }
         public String Description { get; set; }
 
+        public String ImageLink { get; set; }
+
     }
 }

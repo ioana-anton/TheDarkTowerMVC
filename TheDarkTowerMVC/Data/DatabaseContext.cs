@@ -32,11 +32,32 @@ namespace TheDarkTowerMVC.Data
 
         public DbSet<Friend> FriendList { get; set; }
 
+        public DbSet<CardDeckGameCard> CardDeckGameCard { get; set; }
+
 
         //new thingy
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("User");
+            modelBuilder.Entity<CardDeck>().ToTable("CardDeck");
+            modelBuilder.Entity<GameCard>().ToTable("GameCard");
+            modelBuilder.Entity<Inbox>().ToTable("Inbox");
+            modelBuilder.Entity<Recipient>().ToTable("Recipient");
+            modelBuilder.Entity<Friend>().ToTable("Friend");
+            modelBuilder.Entity<CardDeckGameCard>().ToTable("CardDeckGameCard");
+
+            modelBuilder.Entity<CardDeckGameCard>().HasKey(sc => new { sc.GameCardId, sc.CardDeckId });
+
+            modelBuilder.Entity<CardDeckGameCard>()
+                 .HasOne<CardDeck>(sc => sc.CardDeck)
+                 .WithMany(s => s.CardDeckGameCards)
+                 .HasForeignKey(sc => sc.CardDeckId);
+
+
+            modelBuilder.Entity<CardDeckGameCard>()
+                         .HasOne<GameCard>(sc => sc.GameCard)
+                         .WithMany(s => s.CardDeckGameCards)
+                         .HasForeignKey(sc => sc.GameCardId);
         }
 
     }

@@ -1,0 +1,126 @@
+﻿@model TheDarkTowerMVC.DTO.EmailDTO
+
+<!DOCTYPE html>
+<html>
+<style>
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=submit] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+    div {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+
+    #link {
+        visibility: hidden;
+    }
+
+</style>
+<body>
+
+    @*<h3>Using CSS to style an HTML Form</h3>
+
+        <div>
+        <form action="https://localhost:7148/gm/sendemail" method="post">
+        <label for="to-email">To: </label>
+        <input type="text" id="to-email" name="to-email" placeholder="Destination email..">
+        <label for="text-label">To: </label>
+        <input type="text" id="text-input" name="text-input" placeholder="Destination email..">
+        <input id="submit-btn" type="submit" value="Submit">Submit</input>
+        </form>
+        </div>
+
+        <a id="link" href="http://localhost:8081/gm/sendemail">Clicko miii!</a>*@
+
+    @using (Html.BeginForm("CreateEmail", "GameMaster", FormMethod.Post))
+    {
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th colspan="2" align="center">Email Details</th>
+            </tr>
+            <tr>
+                <td>Destination Email: </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>Email text: </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Text)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Submit" /></td>
+            </tr>
+        </table>
+    }
+
+</body>
+
+<script>
+    //var submit = document.getElementById("submit-btn");
+
+    //var link = document.getElementById("link");
+
+    //submit.addEventListener("click",async e =>{
+    //    e.preventDefault()
+
+    //     var toEmail = document.getElementById("to-email").innerHTML
+    //     var text = document.getElementById("text-input").innerHTML
+    //     console.log("toEmail: "+toEmail+" text: "+text);
+
+    //    link.style.visibility="visible";
+
+
+    //     try {
+    //        var res = await fetch('https://localhost:7148/gm/sendemail',{
+    //            method: "POST",
+    //            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    //            body: JSON.stringify({
+    //                Text: text,
+    //                Email: toEmail,
+    //            })})
+
+
+    //        console.log(res);
+
+    //        if(res.redirected) window.location.href = res.url;
+
+    //        var obj = await res.json();
+    //        console.log(obj);
+
+    //            } catch(e) {
+    //             console.log(e);
+    //         }
+
+
+    //});
+</script>
+</html>
+
+

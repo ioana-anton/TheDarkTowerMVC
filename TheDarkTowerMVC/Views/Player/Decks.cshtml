@@ -24,6 +24,9 @@
         tr:nth-child(even) {
             background-color: #dddddd;
         }
+
+        .deck-id-btn {
+        }
     </style>
 </head>
 <body>
@@ -44,7 +47,8 @@
                 {
                     <tr>
                         <!-- Table Row - 1 -->
-            <td>@deck.Id</td>
+            <td><button class="deck-id-btn">@deck.Id</button></td>
+                        @*HttpContext.Session.SetString("deckid",@deck.Id);*@
                         <td>@deck.Name</td>
                         <td>@deck.byAdmin</td>
                         <td>@deck.CreatedDateTime</td>
@@ -62,4 +66,39 @@
 
     <button class="player-add-new-deck-btn" onclick="window.location.href='https://localhost:7148/player/adddeck'">Add a new deck</button>
 </body>
+
+<script>
+    console.log("am apelat funtia!");
+    @*document.getElementById("deck-id-btn").addEventListener("click",function(){
+        console.log("am apelat funtia!");
+
+        console.log("Am cules deckId-ul: " + deckId);
+        @*HttpContext.Session.SetString("deckid",deckId);*@
+    @* window.location.href='https://localhost:7148/player/cards/';
+        });*@
+    document.querySelectorAll(".deck-id-btn").forEach(btn => {
+        btn.addEventListener("click", async e => {
+            e.preventDefault();
+            var deckId =  btn.innerHTML;
+            console.log("Am cules deckId-ul: " + deckId);
+
+            try {
+                var res = await fetch(`https://localhost:7148/player/cards/${deckId}`, {
+                    method: "GET",
+                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                });
+
+                console.log(res);
+
+                if(res.redirected) window.location.href = res.url;
+                var obj = res.json();
+                console.log(obj);
+
+                //window.location.href = `${obj}`;
+            } catch(e) {
+                console.log(e);
+            }
+        })
+    })
+</script>
 </html>

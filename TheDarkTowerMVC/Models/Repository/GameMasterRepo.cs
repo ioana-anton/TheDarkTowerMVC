@@ -18,9 +18,10 @@ namespace TheDarkTowerMVC.Models.Repository
         {
 
 
-            var card = databaseContext.GameCard.Where(x => x.Id.Equals(id)).Include(y => y.CardDeck).ToList().First();
+            //var card = databaseContext.GameCard.Where(x => x.Id.Equals(id)).Include(y => y.CardDecks).ToList().First();
 
-            return card;
+            // return card;
+            return null;
         }
         public List<CardDeck> GetCardDecks(String owner)
         {
@@ -35,9 +36,11 @@ namespace TheDarkTowerMVC.Models.Repository
         {
 
 
-            var card = databaseContext.GameCard.Where(x => x.Name.Equals(name)).Include(y => y.CardDeck).ToList().First();
+            // var card = databaseContext.GameCard.Where(x => x.Name.Equals(name)).Include(y => y.CardDecks).ToList().First();
 
-            return card;
+            // return card;
+
+            return null;
         }
 
         public async Task InsertNewCard(GameCard card)
@@ -60,10 +63,10 @@ namespace TheDarkTowerMVC.Models.Repository
         {
             foreach (GameCard card in cards)
             {
-                databaseContext.GameCard.Remove(card);
-                var decks = databaseContext.CardDecks.Where(u => u.Cards.Contains(card)).ToList();
-                foreach (CardDeck deck in decks)
-                    databaseContext.CardDecks.Remove(deck);
+                //databaseContext.GameCard.Remove(card);
+                //var decks = databaseContext.CardDecks.Where(u => u.GameCards.Contains(card)).ToList();
+                //foreach (CardDeck deck in decks)
+                //    databaseContext.CardDecks.Remove(deck);
 
                 await databaseContext.SaveChangesAsync();
             }

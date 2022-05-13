@@ -17,25 +17,10 @@ namespace TheDarkTowerMVC.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("CardDeckGameCard", b =>
-                {
-                    b.Property<string>("CardDeckId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CardsId")
-                        .HasColumnType("text");
-
-                    b.HasKey("CardDeckId", "CardsId");
-
-                    b.HasIndex("CardsId");
-
-                    b.ToTable("CardDeckGameCard");
-                });
 
             modelBuilder.Entity("InboxRecipient", b =>
                 {
@@ -75,7 +60,22 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CardDecks");
+                    b.ToTable("CardDeck", (string)null);
+                });
+
+            modelBuilder.Entity("TheDarkTowerMVC.Entity.CardDeckGameCard", b =>
+                {
+                    b.Property<string>("GameCardId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CardDeckId")
+                        .HasColumnType("text");
+
+                    b.HasKey("GameCardId", "CardDeckId");
+
+                    b.HasIndex("CardDeckId");
+
+                    b.ToTable("CardDeckGameCard", (string)null);
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Friend", b =>
@@ -90,7 +90,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FriendList");
+                    b.ToTable("Friend", (string)null);
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.GameCard", b =>
@@ -105,6 +105,10 @@ namespace TheDarkTowerMVC.Migrations
                     b.Property<int>("Health")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ImageLink")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -114,7 +118,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameCard");
+                    b.ToTable("GameCard", (string)null);
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Inbox", b =>
@@ -133,7 +137,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Inbox");
+                    b.ToTable("Inbox", (string)null);
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Recipient", b =>
@@ -148,7 +152,7 @@ namespace TheDarkTowerMVC.Migrations
 
                     b.HasIndex("ReceiverId");
 
-                    b.ToTable("Recipients");
+                    b.ToTable("Recipient", (string)null);
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.User", b =>
@@ -170,21 +174,6 @@ namespace TheDarkTowerMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
-                });
-
-            modelBuilder.Entity("CardDeckGameCard", b =>
-                {
-                    b.HasOne("TheDarkTowerMVC.Entity.CardDeck", null)
-                        .WithMany()
-                        .HasForeignKey("CardDeckId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheDarkTowerMVC.Entity.GameCard", null)
-                        .WithMany()
-                        .HasForeignKey("CardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("InboxRecipient", b =>
@@ -213,6 +202,25 @@ namespace TheDarkTowerMVC.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TheDarkTowerMVC.Entity.CardDeckGameCard", b =>
+                {
+                    b.HasOne("TheDarkTowerMVC.Entity.CardDeck", "CardDeck")
+                        .WithMany("CardDeckGameCards")
+                        .HasForeignKey("CardDeckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheDarkTowerMVC.Entity.GameCard", "GameCard")
+                        .WithMany("CardDeckGameCards")
+                        .HasForeignKey("GameCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CardDeck");
+
+                    b.Navigation("GameCard");
+                });
+
             modelBuilder.Entity("TheDarkTowerMVC.Entity.Friend", b =>
                 {
                     b.HasOne("TheDarkTowerMVC.Entity.User", "User")
@@ -238,6 +246,16 @@ namespace TheDarkTowerMVC.Migrations
                         .HasForeignKey("ReceiverId");
 
                     b.Navigation("Receiver");
+                });
+
+            modelBuilder.Entity("TheDarkTowerMVC.Entity.CardDeck", b =>
+                {
+                    b.Navigation("CardDeckGameCards");
+                });
+
+            modelBuilder.Entity("TheDarkTowerMVC.Entity.GameCard", b =>
+                {
+                    b.Navigation("CardDeckGameCards");
                 });
 
             modelBuilder.Entity("TheDarkTowerMVC.Entity.User", b =>

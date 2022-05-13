@@ -57,6 +57,32 @@ namespace TheDarkTowerMVC.Models.Service
             return _mapper.Map<List<GameCardDTO>>(cards);
         }
 
+        public List<GameCardDTO> GetCardsFromDeck(string deckId)
+        {
+            var cards = _playerRepo.GetCardsFromDeck(deckId);
+
+            try
+            {
+                if (cards.Count == 0)
+                {
+                    _logger.LogError("PlayerService: There are no game cards!");
+                    return null;
+
+                }
+                else
+                {
+                    return _mapper.Map<List<GameCardDTO>>(cards);
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                _logger.LogError(e.Message);
+
+            }
+
+            return null;
+        }
+
         public async Task<CreatedDeckDTO> CreateDeck(String userId, SDeleteCardsDTO cards)
         {
             var user = await _playerRepo.GetUserById(userId);

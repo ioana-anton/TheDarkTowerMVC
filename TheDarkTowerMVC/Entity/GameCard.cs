@@ -1,4 +1,6 @@
-﻿namespace TheDarkTowerMVC.Entity
+﻿using System.Text.Json.Serialization;
+
+namespace TheDarkTowerMVC.Entity
 {
     public class GameCard
     {
@@ -9,6 +11,8 @@
         public int Health { get; set; }
         public String Description { get; set; }
 
-        public List<CardDeck> CardDeck { get; set; }
+        public String ImageLink { get; set; }
+
+        public List<CardDeckGameCard> CardDeckGameCards { get; set; }
     }
 }

@@ -1,38 +1,42 @@
 ﻿@using Microsoft.AspNetCore.Http
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="/css/home.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 
 <body>
 
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     @* <div class="darktowergif"></div>*@
-
+    <div class="img-div">
     <img src="/css/images/darktower.gif" />
+    </div>
 
     @{
         @if (Context.Session.GetString("userid") != null)
         {
-            <div class="btn-div">
+            <div class="text-center text-lg-start mt-4 pt-2 btn-div">
 
                 @if (@Context.Session.GetString("userrole").Equals("0"))
 
                 {//Player
+                    <button onclick="window.location.href='https://localhost:7148/player/decks'" type="button" class="btn action-btn btn-primary btn-lg player-view-decks-btn">View Decks</button>
 
-                    <button class="player-view-decks-btn" onclick="window.location.href='https://localhost:7148/player/decks'">View Decks</button>
-
-                    <button class="invite-player-btn" onclick="window.location.href='https://localhost:7148/user/inbox'">Invite friend</button>
-
+                    <button onclick="window.location.href='https://localhost:7148/user/inbox'" type="button" class="action-btn invite-player-btn btn btn-primary btn-lg">Invite friend</button>
+                    
                 }
 
                 @if (@Context.Session.GetString("userrole").Equals("2"))
 
                 {//GameMaster
 
-                    <button class="add-new-card-btn" onclick="window.location.href='https://localhost:7148/gm/createcard'">Create Card</button>
-
+                    <button class="btn btn-primary btn-lg add-new-card-btn action-btn" onclick="window.location.href='https://localhost:7148/gm/createcard'">Create A Card!</button>
+                    <button class="btn btn-primary btn-lg send-email-page-btn action-btn" onclick="window.location.href='https://localhost:7148/gm/createmail'">Create an Email!</button>
 
 
                 }

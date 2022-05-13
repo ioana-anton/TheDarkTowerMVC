@@ -35,7 +35,7 @@ namespace TownHall.Controllers
         [Route("login")]
         public IActionResult Index()
         {
-
+            //ViewBag.HideNavBar = true;
             return View();
         }
 
