@@ -15,16 +15,19 @@ namespace TownHall.Controllers
     {
         UserService _userService;
         private readonly ILogger<UserController> _logger;
+        private readonly IMessageProducer _messagePublisher;
 
         /// <summary>
         /// The constructor uses both the service linked to the constructor and a logger for keeping track of data.
         /// </summary>
         /// <param name="userService">Represents the service class linked to this controller.</param>
         /// <param name="logger">Represents the logger used inside this class for outputing status updates.</param>
-        public UserController(UserService userService, ILogger<UserController> logger)
+        public UserController(UserService userService, ILogger<UserController> logger, IMessageProducer messagePublisher)
         {
             _userService = userService;
             _logger = logger;
+            //new
+            _messagePublisher = messagePublisher;
         }
 
         /// <summary>
@@ -71,6 +74,15 @@ namespace TownHall.Controllers
         public IActionResult Account()
         {
             return View();
+        }
+
+
+        [HttpGet]
+        [Route("logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return View("/");
         }
 
 
@@ -137,7 +149,6 @@ namespace TownHall.Controllers
                 }
             }
 
-
             return View();
         }
 
@@ -182,6 +193,12 @@ namespace TownHall.Controllers
                 _logger.LogError(Error.USERCONTROLLER_CREATE_USER);
                 return NotFound();
             }
+
+            RegisterEmailDTO msg = new RegisterEmailDTO();
+            msg.Name = createUserDTO.Username;
+            msg.Email = createUserDTO.Username;
+
+            _messagePublisher.SendMessage(msg);
 
             _logger.LogInformation("UserController; User-ul cu email-ul: " + user.Username + " a fost creat cu succes!");
             return Ok(user);

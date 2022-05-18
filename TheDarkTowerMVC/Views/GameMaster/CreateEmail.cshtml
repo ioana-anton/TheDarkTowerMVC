@@ -1,4 +1,5 @@
 ﻿@model TheDarkTowerMVC.DTO.EmailDTO
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
 <html>
@@ -15,7 +16,7 @@
 
     input[type=submit] {
         width: 100%;
-        background-color: #4CAF50;
+        background-color: #7c1019;
         color: white;
         padding: 14px 20px;
         margin: 8px 0;
@@ -25,7 +26,7 @@
     }
 
         input[type=submit]:hover {
-            background-color: #45a049;
+            background-color: red;
         }
 
     div {
@@ -41,85 +42,90 @@
 </style>
 <body>
 
-    @*<h3>Using CSS to style an HTML Form</h3>
+    @* <h3>Using CSS to style an HTML Form</h3>*@
 
-        <div>
-        <form action="https://localhost:7148/gm/sendemail" method="post">
-        <label for="to-email">To: </label>
-        <input type="text" id="to-email" name="to-email" placeholder="Destination email..">
-        <label for="text-label">To: </label>
-        <input type="text" id="text-input" name="text-input" placeholder="Destination email..">
-        <input id="submit-btn" type="submit" value="Submit">Submit</input>
-        </form>
-        </div>
 
-        <a id="link" href="http://localhost:8081/gm/sendemail">Clicko miii!</a>*@
 
-    @using (Html.BeginForm("CreateEmail", "GameMaster", FormMethod.Post))
-    {
+    @*    @using (Html.BeginForm("CreateEmail", "GameMaster", FormMethod.Post))
+        {
         <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th colspan="2" align="center">Email Details</th>
-            </tr>
-            <tr>
-                <td>Destination Email: </td>
-                <td>
-                    @Html.TextBoxFor(m => m.Email)
-                </td>
-            </tr>
-            <tr>
-                <td>Email text: </td>
-                <td>
-                    @Html.TextBoxFor(m => m.Text)
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Submit" /></td>
-            </tr>
+        <tr>
+        <th colspan="2" align="center">Email Details</th>
+        </tr>
+        <tr>
+        <td>Destination Email: </td>
+        <td>
+        @Html.TextBoxFor(m => m.Email)
+        </td>
+        </tr>
+        <tr>
+        <td>Email text: </td>
+        <td>
+        @Html.TextBoxFor(m => m.Text)
+        </td>
+        </tr>
+        <tr>
+        <td></td>
+        <td><input type="submit" value="Submit" /></td>
+        </tr>
         </table>
-    }
+        }
+    *@
+
+
+    <form asp-controller="GameMaster" asp-action="CreateEmail" method="post">
+        <label type="text" asp-for="Email"></label>
+        <input type="text" asp-for="Email" />
+        <label type="text" asp-for="Text"></label>
+        <input type="text" asp-for="Text" />
+        <input type="submit" id="submit-btn">Submit</input>
+    </form>
+
+    <a id="link">Clicko miii!</a>
+
 
 </body>
 
 <script>
-    //var submit = document.getElementById("submit-btn");
+        var submit = document.getElementById("submit-btn");
 
-    //var link = document.getElementById("link");
+        var link = document.getElementById("link");
 
-    //submit.addEventListener("click",async e =>{
-    //    e.preventDefault()
+        submit.addEventListener("click",async e =>{
+            e.preventDefault()
 
-    //     var toEmail = document.getElementById("to-email").innerHTML
-    //     var text = document.getElementById("text-input").innerHTML
-    //     console.log("toEmail: "+toEmail+" text: "+text);
+        //     var toEmail = document.getElementById("to-email").innerHTML
+        //     var text = document.getElementById("text-input").innerHTML
+        //     console.log("toEmail: "+toEmail+" text: "+text);
 
-    //    link.style.visibility="visible";
-
-
-    //     try {
-    //        var res = await fetch('https://localhost:7148/gm/sendemail',{
-    //            method: "POST",
-    //            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    //            body: JSON.stringify({
-    //                Text: text,
-    //                Email: toEmail,
-    //            })})
+            link.style.visibility="visible";
 
 
-    //        console.log(res);
-
-    //        if(res.redirected) window.location.href = res.url;
-
-    //        var obj = await res.json();
-    //        console.log(obj);
-
-    //            } catch(e) {
-    //             console.log(e);
-    //         }
+        //     try {
+        //        var res = await fetch('https://localhost:7148/gm/createemail',{
+        //            method: "POST",
+        //            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        //            body: JSON.stringify({
+        //                Text: text,
+        //                Email: toEmail,
+        //            })})
 
 
-    //});
+        //        console.log(res);
+
+        //        if(res.redirected) window.location.href = res.url;
+
+        //        var obj = await res.json();
+        //        console.log(obj);
+
+        //            } catch(e) {
+        //             console.log(e);
+        //         }
+
+
+        });
+
+    }
 </script>
 </html>
 

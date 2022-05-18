@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TheDarkTowerMVC.Data;
 using TheDarkTowerMVC.Models.Repository;
 using TheDarkTowerMVC.Models.Service;
+using TheDarkTowerMVC.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,8 @@ builder.Services.AddScoped<PlayerService>();
 
 builder.Services.AddScoped<GameMasterRepo>();
 builder.Services.AddScoped<GameMasterService>();
+
+builder.Services.AddScoped<IMessageProducer, RegisterEmailQueue>();
 
 var app = builder.Build();
 

@@ -13,7 +13,7 @@ namespace TheDarkTowerMVC.Controllers
     {
         private readonly ILogger<GameMasterController> _logger;
         private GameMasterService _gmService;
-        static readonly HttpClient client = new HttpClient();
+        private readonly HttpClient client = new HttpClient();
 
 
         public GameMasterController(GameMasterService gmService, ILogger<GameMasterController> logger)
@@ -43,7 +43,7 @@ namespace TheDarkTowerMVC.Controllers
         }
 
         [HttpGet]
-        [Route("createmail")]
+        [Route("createemail")]
         public IActionResult CreateEmail()
         {
             return View();
@@ -51,18 +51,21 @@ namespace TheDarkTowerMVC.Controllers
 
         [HttpPost]
         [Route("createemail")]
-        public IActionResult CreateEnail(EmailDTO email)
+        public async Task<IActionResult> CreateEmail([FromForm] EmailDTO emailDTO)
+        //(EmailDTO email)
         {
             Console.WriteLine("Bunaaaaaaaaa! ");
-            //EmailDTO emailDTO = new EmailDTO();
-            //emailDTO.Text = "acesta este text din c#!";
-            //emailDTO.Email = "imiplac@ciresele.org";
-            //var json = JsonConvert.SerializeObject(emailDTO);
-            //var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
 
-            // HttpResponseMessage response = await client.PostAsync("hhttp://localhost:8081/gm/sendemail", content);
-            // response.EnsureSuccessStatusCode();
-            // string responseBody = await response.Content.ReadAsStringAsync();
+            var json = JsonConvert.SerializeObject(emailDTO);
+            var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
+
+            client.DefaultRequestHeaders.Add("SecurityKey", "2233");
+
+            // Console.WriteLine("Security key: " + client.DefaultRequestHeaders.GetValues("SecurityKey").ToString());
+
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8081/gm/sendemail", content);
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
 
             //return Content("<script>window.location = 'localhost: ';</script>");
             return View("CreateEmail");
