@@ -14,19 +14,23 @@
 </head>
 
 <body>
-    @if (cards != null)
-    {
-        <div class="card-grid">
-            Console.WriteLine("pachetul are: " + @cards.Count + " carti;");
-            @foreach (var card in cards)
-            {
-                <div class="card"><img href=@card.ImageLink></div>
-            }
+    @{
+        if (cards != null)
+        {
+            <div class="card-grid">
+                @foreach (var card in cards)
+                {
 
-        </div>
-    }
-    else
-    {
-        <p>This deck is empty!!!!</p>
+                    @*<img href=@card.ImageLink>*@
+                    <img id="card" src="@card.ImageLink" width="256" height="384" alt="GameCard">
+
+                }
+
+            </div>
+        }
+        else
+        {
+            <p>This deck is empty!!!!</p>
+        }
     }
 </body>

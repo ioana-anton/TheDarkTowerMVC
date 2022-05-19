@@ -86,12 +86,11 @@ namespace TheDarkTowerMVC.Models.Service
         public async Task<CreatedDeckDTO> CreateDeck(String userId, SDeleteCardsDTO cards)
         {
 
-            _logger.LogInformation("PLAYER_SERVICE: CREATEDECK: PREPARING TO CALL REPO");
+            _logger.LogInformation("PLAYER_SERVICE: CREATEDECK: PREPARING TO CALL REPO " + cards.Cards.Count());
 
             var user = await _playerRepo.GetUserById(userId);
             var name = cards.Cards.Last();
             cards.Cards.Remove(cards.Cards.Last());
-
 
 
             var gameCardsToAdd = new List<GameCard>();
@@ -102,7 +101,11 @@ namespace TheDarkTowerMVC.Models.Service
                 //Console.Write("GameMasterService; DeleteCards; Added to delete: "
                 //    + newCard.Id);
             }
+
             var deck = await _playerRepo.CreateCardDeck(gameCardsToAdd, name, user);
+
+            _logger.LogInformation("PLAYER_SERVICE: CREATEDECK: " + deck.Name);
+
 
             return _mapper.Map<CreatedDeckDTO>(deck);
         }

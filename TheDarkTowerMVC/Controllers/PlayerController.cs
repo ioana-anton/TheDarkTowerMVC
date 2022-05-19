@@ -64,7 +64,7 @@ namespace TheDarkTowerMVC.Controllers
         [Route("adddeck")]
         public async Task<IActionResult> AddDeck([FromBody] SDeleteCardsDTO selectedCards)
         {
-            if (selectedCards == null)
+            if (selectedCards == null || selectedCards.Cards.Count() == 0)
             {
                 _logger.LogError("PlayerController; AddDeck; No data was selected.");
                 return BadRequest();

@@ -8,28 +8,28 @@
 }
 <html>
 <head>
-@*    <style>
+    @*    <style>
         table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
         }
 
         td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
         }
 
         tr:nth-child(even) {
-            background-color: #dddddd;
+        background-color: #dddddd;
         }
 
         .deck-id-btn {
         }
-    </style>*@
+        </style>*@
     <link rel="stylesheet" href="/css/decks.css" />
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body>
 
@@ -85,6 +85,7 @@
             console.log("Am cules deckId-ul: " + deckId);
 
             try {
+                window.location.href = `https://localhost:7148/player/cards/${deckId}`;
                 var res = await fetch(`https://localhost:7148/player/cards/${deckId}`, {
                     method: "GET",
                     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },

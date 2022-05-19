@@ -61,29 +61,41 @@ namespace TheDarkTowerMVC.Models.Repository
         {
             if (deckId != null)
             {
-                var deck = databaseContext.CardDecks.Where(x => x.Id.Equals(deckId)).Include("CardDeckGameCards.GameCard").FirstOrDefault();
-                Console.WriteLine("Am gasit deck: " + deck.Name + " si: " + deck.CardDeckGameCards.Count());
-                List<GameCard> cards = new List<GameCard>();
-                if (deck != null)
+                var deck = databaseContext.CardDecks.Where(x => x.Id.Equals(deckId)).FirstOrDefault();
+                var link = databaseContext.CardDeckGameCard.Where(y => y.CardDeckId.Equals(deckId)).ToList();
+                var cards = new List<GameCard>();
+                foreach (var cardDeckGameCard in link)
                 {
-                    Console.WriteLine("PlayerRepo/GetCardsFromDeck: " + deck.CardDeckGameCards.Count());
-                    var list = deck.CardDeckGameCards.Where(u => u.CardDeckId.Equals(deckId));
-                    foreach (CardDeckGameCard? card in list)
-                    {
-                        cards.Add(card.GameCard);
-                    };
+                    //var card = databaseContext.GameCard.Where(y => y.Id.Equals(cardid)).FirstOrDefault();
+                    //cards.Add(card);
+                    cards.Add(cardDeckGameCard.GameCard);
+                }
+                Console.WriteLine("Am gasit deck: " + deck.Name + " si: " + cards.Count());
+                Console.WriteLine("PlayerRepo/GetCardsFromDeck: " + deck.CardDeckGameCards.Count());
+                if (cards != null) return cards;
+            }
 
-                    return cards;
-                }
-                else
-                {
-                    Console.WriteLine("PLAYERREPO: DECK ESTE NULL!");
-                }
-            }
-            else
-            {
-                Console.WriteLine("PLAYERREPO: DECKID ESTE NULL!");
-            }
+            //List<GameCard> cards = new List<GameCard>();
+            //if (deck != null)
+            //{
+
+            //        var list = deck.CardDeckGameCards.Where(u => u.CardDeckId.Equals(deckId));
+            //        foreach (CardDeckGameCard? card in list)
+            //        {
+            //            cards.Add(card.GameCard);
+            //        };
+
+            //        return cards;
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("PLAYERREPO: DECK ESTE NULL!");
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("PLAYERREPO: DECKID ESTE NULL!");
+            //}
 
             return null;
         }
