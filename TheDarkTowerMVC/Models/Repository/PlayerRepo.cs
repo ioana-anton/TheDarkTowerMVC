@@ -65,13 +65,19 @@ namespace TheDarkTowerMVC.Models.Repository
                 //Console.WriteLine("Am gasit deck: " + deck.Name);
                 List<GameCard> cards = new List<GameCard>();
                 var list = deck.CardDeckGameCards.Where(u => u.CardDeckId.Equals(deckId));
-                if (deck)
+                if (deck != null)
+                {
                     foreach (CardDeckGameCard? card in list)
                     {
                         cards.Add(card.GameCard);
                     };
 
-                return cards;
+                    return cards;
+                }
+                else
+                {
+                    Console.WriteLine("PLAYERREPO: DECK ESTE NULL!");
+                }
             }
             else
             {

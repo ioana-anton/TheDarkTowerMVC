@@ -13,6 +13,10 @@
     <label for="password">Password:</label>
     <input id="password" type="password" name="password" />
     <br>
+    <select name="file-types" id="file-types">
+        <option value="txt">TXT</option>
+        <option value="pdf">PDF</option>
+    </select>
     <button id="register-btn">Register</button>
 </form>
 
@@ -22,8 +26,14 @@
         e.preventDefault();
         var uname = document.querySelector("#username").value;
         var pass = document.querySelector("#password").value;
+        var fileType = document.querySelector("#file-types");
+        var selectedText = fileType.selectedOptions;
 
-        console.log(`${uname} cu parola ${pass}`)
+        var values = Array.from(selectedText).map(({ value }) => value);
+            values.push(name.value);
+
+        var singleValue = values[0];
+        console.log(`${uname} cu parola ${pass} si tipul de fisier ${singleValue}`)
 
         try {
             var res = await fetch('https://localhost:7148/user/register', {
@@ -31,7 +41,8 @@
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     Username: uname,
-                    Password: pass
+                    Password: pass,
+                    FileType: singleValue,
                 })
             });
 

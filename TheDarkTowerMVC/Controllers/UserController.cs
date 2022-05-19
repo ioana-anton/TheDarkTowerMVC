@@ -3,6 +3,7 @@ using TheDarkTowerMVC.DTO;
 using TheDarkTowerMVC.Entity;
 using TheDarkTowerMVC.Models.Service;
 using TheDarkTowerMVC.Utils;
+using TheDarkTowerMVC.Utils.FileStrategyDP;
 
 namespace TownHall.Controllers
 {
@@ -179,8 +180,11 @@ namespace TownHall.Controllers
         /// <returns>Returns the confirmation that a user has been created.</returns>
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> CreateUser(CreateUserDTO createUserDTO)
+        public async Task<IActionResult> CreateUser(RegisterFormDTO registerFormDTO)
         {
+            CreateUserDTO createUserDTO = new CreateUserDTO();
+            createUserDTO.Username = registerFormDTO.Username;
+            createUserDTO.Password = registerFormDTO.Password;
             if (createUserDTO == null)
             {
                 // _logger.LogError(Error.USERCONTROLLER_CREATE_USER);
@@ -199,6 +203,26 @@ namespace TownHall.Controllers
             msg.Email = createUserDTO.Username;
 
             _messagePublisher.SendMessage(msg);
+
+            if (registerFormDTO.FileType.Equals("pdf"))
+            {
+                Console.WriteLine("Ai selectat PDF!");
+                PdfFileStrategy pdfFileStrategy = new PdfFileStrategy();
+                FileContext fileContext = new FileContext(pdfFileStrategy);
+                String input = new string("Your new account: \n Username: " + createUserDTO.Username + "\n Password: " + createUserDTO.Password);
+                fileContext.CreateFile(input);
+            }
+
+            if (registerFormDTO.FileType.Equals("txt"))
+            {
+                Console.WriteLine("Ai selectat TXT!");
+                TxtFileStrategy txtFileStrategy = new TxtFileStrategy();
+                FileContext fileContext = new FileContext(txtFileStrategy);
+                String input = new string("Your new account: \n Username: " + createUserDTO.Username + "\n Password: " + createUserDTO.Password);
+                fileContext.CreateFile(input);
+            }
+
+
 
             _logger.LogInformation("UserController; User-ul cu email-ul: " + user.Username + " a fost creat cu succes!");
             return Ok(user);
