@@ -1,0 +1,17 @@
+
+body{
+    background-color: #b06d74d7 !important;
+}
+
+.multiple-cards-submit{
+    font-family: monospace !important;
+    font-style: normal;
+    font-size: 20px;
+    /* color:white; */
+    background-color: #7c1019 !important;
+}
+
+
+.multiple-cards-submit:hover{
+    background-color: red !important;
+}

@@ -82,7 +82,7 @@ namespace TownHall.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return View("/");
+            return View("Index");
         }
 
 

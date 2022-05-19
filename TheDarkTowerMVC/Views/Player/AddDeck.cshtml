@@ -9,38 +9,43 @@
     List<GameCardDTO> cards = (List<GameCardDTO>)ViewData["GameCards"];
 }
 
+<head>
+    <link rel="stylesheet" href="/css/adddeck.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
 
 <h1>Create a new Deck! (ᗒᗨᗕ)</h1>
 
 @if (cards == null)
 {
-        <h2>You don't have any cards! :c </h2>
+    <h2>You don't have any cards! :c </h2>
 }
 else
 {
 
-        <form>
-            <label for="name">Deck Name:</label>
-            <input id="name" name="name" />
-            <br>
-            <h2>Select cards to add to your deck: </h2>
-            <select name="cardselect" id="cardselect" multiple>
+    <form>
+        <label for="name">Deck Name:</label>
+        <input id="name" name="name" />
+        <br>
+        <h2>Select cards to add to your deck: </h2>
+        <select name="cardselect" id="cardselect" multiple>
             @foreach (var card in cards)
             {
                 @if (card != null)
                 {
-                                <option value=@card.Name>@card.Name</option>
+                    <option value=@card.Name>@card.Name</option>
 
                 }
                 else
                 {
-                                <h2>You don't have any friends! :c </h2>
+                    <h2>You don't have any friends! :c </h2>
                 }
             }
-            </select>
-            <br></br>
-            <input id="multiple-cards-submit" type="submit" value="Submit">
-        </form>
+        </select>
+        <br></br>
+        <input id="multiple-cards-submit" class="btn action-btn btn-primary btn-lg" type="submit" value="Submit">
+    </form>
 }
 
 <script>

@@ -8,7 +8,7 @@
 }
 <html>
 <head>
-    <style>
+@*    <style>
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
@@ -27,7 +27,9 @@
 
         .deck-id-btn {
         }
-    </style>
+    </style>*@
+    <link rel="stylesheet" href="/css/decks.css" />
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body>
 
@@ -64,7 +66,7 @@
     }
 
 
-    <button class="player-add-new-deck-btn" onclick="window.location.href='https://localhost:7148/player/adddeck'">Add a new deck</button>
+    <button class="player-add-new-deck-btn btn action-btn btn-primary btn-lg" onclick="window.location.href='https://localhost:7148/player/adddeck'">Add a new deck</button>
 </body>
 
 <script>

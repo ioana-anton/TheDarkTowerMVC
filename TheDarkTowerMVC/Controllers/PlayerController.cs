@@ -69,14 +69,15 @@ namespace TheDarkTowerMVC.Controllers
                 _logger.LogError("PlayerController; AddDeck; No data was selected.");
                 return BadRequest();
             }
+            //Console.WriteLine("Card count: " + selectedCards.Cards.Count());
             _logger.LogInformation("PlayerController; AddDeck; Preparing to create: " + selectedCards.Cards.Last());
 
             var id = HttpContext.Session.GetString("userid");
             await _playerService.CreateDeck(id, selectedCards);
 
-            ViewData["GameCards"] = _playerService.GetGameCards();
+            //  ViewData["GameCards"] = _playerService.GetGameCards();
 
-            ViewData["CardDecks"] = _playerService.GetCardDecks(id);
+            //   ViewData["CardDecks"] = _playerService.GetCardDecks(id);
 
             return Ok();
         }

@@ -64,10 +64,12 @@ namespace TheDarkTowerMVC.Models.Repository
                 var deck = databaseContext.CardDecks.Where(x => x.Id.Equals(deckId)).Include("CardDeckGameCards.GameCard").FirstOrDefault();
                 //Console.WriteLine("Am gasit deck: " + deck.Name);
                 List<GameCard> cards = new List<GameCard>();
-                foreach (var card in deck.CardDeckGameCards.Where(u => u.CardDeckId.Equals(deckId)))
-                {
-                    cards.Add(card.GameCard);
-                };
+                var list = deck.CardDeckGameCards.Where(u => u.CardDeckId.Equals(deckId));
+                if (deck)
+                    foreach (CardDeckGameCard? card in list)
+                    {
+                        cards.Add(card.GameCard);
+                    };
 
                 return cards;
             }
