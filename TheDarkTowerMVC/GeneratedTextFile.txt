@@ -1,0 +1,3 @@
+Your new account: 
+ Username: newUser7
+ Password: newUser7

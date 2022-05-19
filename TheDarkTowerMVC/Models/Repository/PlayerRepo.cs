@@ -62,11 +62,12 @@ namespace TheDarkTowerMVC.Models.Repository
             if (deckId != null)
             {
                 var deck = databaseContext.CardDecks.Where(x => x.Id.Equals(deckId)).Include("CardDeckGameCards.GameCard").FirstOrDefault();
-                //Console.WriteLine("Am gasit deck: " + deck.Name);
+                Console.WriteLine("Am gasit deck: " + deck.Name + " si: " + deck.CardDeckGameCards.Count());
                 List<GameCard> cards = new List<GameCard>();
-                var list = deck.CardDeckGameCards.Where(u => u.CardDeckId.Equals(deckId));
                 if (deck != null)
                 {
+                    Console.WriteLine("PlayerRepo/GetCardsFromDeck: " + deck.CardDeckGameCards.Count());
+                    var list = deck.CardDeckGameCards.Where(u => u.CardDeckId.Equals(deckId));
                     foreach (CardDeckGameCard? card in list)
                     {
                         cards.Add(card.GameCard);
@@ -95,9 +96,21 @@ namespace TheDarkTowerMVC.Models.Repository
             List<CardDeckGameCard> items = new List<CardDeckGameCard>();
             foreach (var card in cards)
             {
-                var item = databaseContext.CardDeckGameCard.Where(u => u.GameCard.Equals(card)).FirstOrDefault();
-                if (item != null)
-                    items.Add(item);
+                //var item = databaseContext.CardDeckGameCard.Where(u => u.GameCard.Equals(card)).FirstOrDefault();
+                //if (item != null)
+                //{
+                //    items.Add(item);
+                //    Console.WriteLine("Am inserat: " + item.GameCardId);
+                //}
+
+                var item = new CardDeckGameCard();
+                item.CardDeck = cardDeck;
+                item.CardDeckId = cardDeck.Id;
+                item.GameCard = card;
+                item.GameCardId = card.Id;
+                items.Add(item);
+                Console.WriteLine("Am inserat: " + item.GameCardId);
+
             }
             cardDeck.CardDeckGameCards = items;
             cardDeck.User = user;
